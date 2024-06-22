@@ -3,12 +3,13 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Logo from "../assets/movie-mate-logo-2.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { instance } from "../utils/axios";
 import { useState } from "react";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [payload, setPayload] = useState({
     name: "",
     email: "",
@@ -16,9 +17,11 @@ const Register = () => {
   });
   const handleRegister = async (e) => {
     e.preventDefault();
-    const result = await instance.post("/users/register", payload);
-    console.log({ payload, result });
-    // Handle login logic here
+    const {
+      data: { msg },
+    } = await instance.post("/users/register", payload);
+    alert(msg);
+    navigate("/login", { replace: true });
   };
   return (
     <>
