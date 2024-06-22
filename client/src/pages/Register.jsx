@@ -5,9 +5,19 @@ import Row from "react-bootstrap/Row";
 import Logo from "../assets/movie-mate-logo-2.png";
 import { Link } from "react-router-dom";
 
+import { instance } from "../utils/axios";
+import { useState } from "react";
+
 const Register = () => {
-  const onRegister = (e) => {
+  const [payload, setPayload] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const handleRegister = async (e) => {
     e.preventDefault();
+    const result = await instance.post("/users/register", payload);
+    console.log({ payload, result });
     // Handle login logic here
   };
   return (
@@ -28,15 +38,45 @@ const Register = () => {
           </div>
           <Card.Body className="p-5">
             <Card.Title>Register</Card.Title>
-            <Form onSubmit={onRegister}>
+            <Form onSubmit={handleRegister}>
               <Row className="mb-3">
+                <Form.Group className="mb-3" controlId="exampleInputName">
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    aria-describedby="name"
+                    onChange={(e) =>
+                      setPayload((prev) => {
+                        return { ...prev, name: e.target.value };
+                      })
+                    }
+                    required
+                  />
+                </Form.Group>
                 <Form.Group className="mb-3" controlId="exampleInputEmail1">
                   <Form.Label>Email address</Form.Label>
-                  <Form.Control type="email" aria-describedby="emailHelp" />
+                  <Form.Control
+                    type="email"
+                    aria-describedby="emailHelp"
+                    onChange={(e) =>
+                      setPayload((prev) => {
+                        return { ...prev, email: e.target.value };
+                      })
+                    }
+                    required
+                  />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="exampleInputPassword1">
                   <Form.Label>Password</Form.Label>
-                  <Form.Control type="password" />
+                  <Form.Control
+                    type="password"
+                    onChange={(e) =>
+                      setPayload((prev) => {
+                        return { ...prev, password: e.target.value };
+                      })
+                    }
+                    required
+                  />
                 </Form.Group>
               </Row>
               <div className="mb-3 text-start">

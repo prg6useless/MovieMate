@@ -14,8 +14,10 @@ const Login = () => {
   });
   const handleLogin = async (e) => {
     e.preventDefault();
-    const result = await instance.post("/users/login", payload);
-    console.log({ result });
+    const {
+      data: { data },
+    } = await instance.post("/users/login", payload);
+    console.log(data); // data = token
   };
 
   const handleImageError = (e) => {

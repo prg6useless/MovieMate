@@ -27,6 +27,8 @@ myEvent.addListener("emailVerification", (email, token) => {
 
 const create = async (payload) => {
   const { email, password } = payload;
+  const newUser = await userModel.findOne({ email });
+  if (newUser) throw new Error("user already exists");
   payload.password = generateHash(password);
   myEvent.emit("sendMail", email);
   return await userModel.create(payload);
