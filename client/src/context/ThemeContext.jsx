@@ -5,7 +5,14 @@ const initialContext = createContext(null);
 const ThemeContext = ({ children }) => {
   // const [name, setName] = useState("saral");
   const [theme, setTheme] = useState("light");
-  const toggleTheme = () => setTheme(theme === "light" ? "dark" : "light");
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+    console.log("cluck");
+    const root = document.getElementsByTagName("body");
+    if (root) {
+      root[0].setAttribute("data-bs-theme", theme);
+    }
+  };
   return (
     <initialContext.Provider value={{ theme, toggleTheme }}>
       {/* <initialContext.Provider value={{ theme, setTheme }}> */}

@@ -39,8 +39,8 @@ router.post(
       if (request.file) {
         request.body.profile = request.file.path;
       }
-      const result = await userController.create(request.body);
-      response.json({ msg: "register successful", data: result });
+      await userController.create(request.body);
+      response.json({ msg: "register successful" });
     } catch (error) {
       next(error); // sends control flow/ error to app.js
     }

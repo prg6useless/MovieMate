@@ -2,34 +2,63 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Logo from "../assets/movie-mate-logo-2.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Notify from "../components/Notify";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { instance } from "../utils/axios";
+import { setToken } from "../utils/storage";
+
+import "./Card.css";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [payload, setPayload] = useState({
     email: "",
     password: "",
   });
+
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+
   const handleLogin = async (e) => {
-    e.preventDefault();
-    const {
-      data: { data },
-    } = await instance.post("/users/login", payload);
-    console.log(data); // data = token
+    try {
+      e.preventDefault();
+      const { data } = await instance.post("/users/login", payload);
+      const { data: token, msg } = data;
+      setMessage(msg);
+      setToken("token", token);
+      navigate("/admin");
+    } catch (error) {
+      const errorMsg =
+        error?.response?.data?.msg || "Something went wrong. Please try again";
+      setError(errorMsg);
+    } finally {
+      setTimeout(() => {
+        setError("");
+        setMessage("");
+      }, 3000);
+    }
   };
 
   const handleImageError = (e) => {
     e.target.src =
       "https://t3.ftcdn.net/jpg/05/90/75/40/360_F_590754013_CoFRYEcAmLREfB3k8vjzuyStsDbMAnqC.jpg";
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/admin", { replace: true });
+    }
+  }, [navigate]);
+
   return (
     <div
       className="d-flex justify-content-center align-items-center"
       style={{ height: "100vh" }}
     >
-      <Card style={{ width: "25rem" }}>
+      <Card style={{ width: "25rem" }} className="authCard">
         <div className="text-center">
           <img
             src={Logo}
@@ -39,6 +68,8 @@ const Login = () => {
             onError={(e) => handleImageError(e)}
           />
         </div>
+        {error && <Notify message={error} />}
+        {message && <Notify variant="success" message={message} />}
         <Card.Body className="p-5">
           <Card.Title>Login</Card.Title>
           <Form onSubmit={handleLogin}>

@@ -4,20 +4,29 @@ import Button from "react-bootstrap/esm/Button";
 import { useNavigate } from "react-router-dom";
 
 const Homepage = () => {
-  const { theme, toggleTheme } = useThemeContext();
+  // changing theme will be in users settings
+  const { toggleTheme } = useThemeContext();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const root = document.getElementById("root");
-    if (root) {
-      root.setAttribute("data-bs-theme", theme);
-    }
-  }, [theme]);
+  // useEffect(() => {
+  //   const root = document.getElementsByTagName("body");
+  //   if (root) {
+  //     root[0].setAttribute("data-bs-theme", theme);
+  //   }
+  // }, [theme]);
 
   return (
-    <div style={{ height: "100vh" }}>
-      <Button onClick={toggleTheme}>Change Theme</Button>
-      <Button onClick={() => navigate("/login")}>Login</Button>
+    <div
+      // style={{ height: "100vh" }}
+      className="d-flex justify-content-center items-center"
+    >
+      <div className="mt-5">
+        <h1>Welcome to Movie Mate</h1>
+        <div className="d-flex justify-content-evenly items-center">
+          <Button onClick={toggleTheme}>Change Theme</Button>
+          <Button onClick={() => navigate("/login")}>Login</Button>
+        </div>
+      </div>
     </div>
   );
 };

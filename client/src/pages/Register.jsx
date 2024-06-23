@@ -3,25 +3,43 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Logo from "../assets/movie-mate-logo-2.png";
+import Notify from "../components/Notify";
 import { Link, useNavigate } from "react-router-dom";
 
 import { instance } from "../utils/axios";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const Register = () => {
   const navigate = useNavigate();
-  const [payload, setPayload] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+  const registerRef = useRef();
+
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const handleImageError = (e) => {
+    e.target.src =
+      "https://t3.ftcdn.net/jpg/05/90/75/40/360_F_590754013_CoFRYEcAmLREfB3k8vjzuyStsDbMAnqC.jpg";
+  };
   const handleRegister = async (e) => {
-    e.preventDefault();
-    const {
-      data: { msg },
-    } = await instance.post("/users/register", payload);
-    alert(msg);
-    navigate("/login", { replace: true });
+    try {
+      e.preventDefault();
+      const form = registerRef.current;
+      const payload = new FormData(form);
+      const { data } = await instance.post("/users/register", payload);
+      setMessage(data?.msg);
+      setTimeout(() => {
+        navigate("/verify-email", { replace: true });
+      }, 1500);
+      
+    } catch (error) {
+      const errorMsg =
+        error?.response?.data?.msg || "Something went wrong. Please try again";
+      setError(errorMsg);
+    } finally {
+      setTimeout(() => {
+        setError("");
+        setMessage("");
+      }, 3000);
+    }
   };
   return (
     <>
@@ -30,29 +48,29 @@ const Register = () => {
         className="d-flex justify-content-center align-items-center"
         style={{ height: "100vh" }}
       >
-        <Card style={{ width: "25rem" }}>
+        <Card style={{ width: "25rem" }} className="authCard">
           <div className="text-center">
             <img
               src={Logo}
               className="img-fluid pt-3"
               alt="Movie Mate Logo"
               width="200px"
+              onError={(e) => handleImageError(e)}
             />
           </div>
+          {error && <Notify message={error} />}
+          {message && <Notify variant="success" message={message} />}
+
           <Card.Body className="p-5">
             <Card.Title>Register</Card.Title>
-            <Form onSubmit={handleRegister}>
+            <Form onSubmit={handleRegister} ref={registerRef}>
               <Row className="mb-3">
                 <Form.Group className="mb-3" controlId="exampleInputName">
                   <Form.Label>Name</Form.Label>
                   <Form.Control
                     type="text"
                     aria-describedby="name"
-                    onChange={(e) =>
-                      setPayload((prev) => {
-                        return { ...prev, name: e.target.value };
-                      })
-                    }
+                    name="name"
                     required
                   />
                 </Form.Group>
@@ -61,25 +79,17 @@ const Register = () => {
                   <Form.Control
                     type="email"
                     aria-describedby="emailHelp"
-                    onChange={(e) =>
-                      setPayload((prev) => {
-                        return { ...prev, email: e.target.value };
-                      })
-                    }
+                    name="email"
                     required
                   />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="exampleInputPassword1">
                   <Form.Label>Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    onChange={(e) =>
-                      setPayload((prev) => {
-                        return { ...prev, password: e.target.value };
-                      })
-                    }
-                    required
-                  />
+                  <Form.Control type="password" name="password" required />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="exampleInputFile">
+                  <Form.Label>Profile Picture</Form.Label>
+                  <Form.Control type="file" name="file" />
                 </Form.Group>
               </Row>
               <div className="mb-3 text-start">
