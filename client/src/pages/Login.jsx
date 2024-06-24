@@ -20,6 +20,7 @@ const Login = () => {
 
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [isVerified, setIsverified] = useState(false);
 
   const handleLogin = async (e) => {
     try {
@@ -33,11 +34,15 @@ const Login = () => {
       const errorMsg =
         error?.response?.data?.msg || "Something went wrong. Please try again";
       setError(errorMsg);
+      errorMsg.includes("verified")
+        ? setIsverified(true)
+        : setIsverified(false);
+      console.log(isVerified);
     } finally {
       setTimeout(() => {
         setError("");
         setMessage("");
-      }, 3000);
+      }, 2500);
     }
   };
 
@@ -68,8 +73,27 @@ const Login = () => {
             onError={(e) => handleImageError(e)}
           />
         </div>
-        {error && <Notify message={error} />}
-        {message && <Notify variant="success" message={message} />}
+        {error && (
+          <div className="mt-3 px-4">
+            <Notify message={error} />
+            {isVerified && (
+              <div className="d-flex justify-content-center">
+                <Button
+                  onClick={() =>
+                    navigate("/verify-email", { state: payload?.email })
+                  }
+                >
+                  Verify Email
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
+        {message && (
+          <div className="mt-3">
+            <Notify variant="success" message={message} />
+          </div>
+        )}
         <Card.Body className="p-5">
           <Card.Title>Login</Card.Title>
           <Form onSubmit={handleLogin}>

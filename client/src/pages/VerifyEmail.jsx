@@ -2,7 +2,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Logo from "../assets/movie-mate-logo-2.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Notify from "../components/Notify";
 
 import { useState } from "react";
@@ -10,10 +10,8 @@ import { instance } from "../utils/axios";
 
 const VerifyEmail = () => {
   const navigate = useNavigate();
-  const [payload, setPayload] = useState({
-    email: "",
-    otp: "",
-  });
+  const { state } = useLocation();
+  const [otp, setOtp] = useState("");
   const [otpSent, setOtpsent] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -26,7 +24,7 @@ const VerifyEmail = () => {
     try {
       e.preventDefault();
       const { data } = await instance.post("/users/generate-email-token", {
-        email: payload.email,
+        email: state,
       });
       setMessage(data?.msg);
       setOtpsent(true);
@@ -38,17 +36,20 @@ const VerifyEmail = () => {
       setTimeout(() => {
         setError("");
         setMessage("");
-      }, 1000);
+      }, 2500);
     }
   };
 
   const handleEmailVerification = async (e) => {
     try {
       e.preventDefault();
-      const { data } = await instance.post("/users/verify-email", payload);
+      const { data } = await instance.post("/users/verify-email", {
+        email: state,
+        otp,
+      });
       setMessage(data?.msg);
       setTimeout(() => {
-        navigate("/login", { replace: true });
+        navigate("/login", { replace: true});
       }, 1500);
     } catch (error) {
       const errorMsg =
@@ -58,7 +59,7 @@ const VerifyEmail = () => {
       setTimeout(() => {
         setError("");
         setMessage("");
-      }, 1000);
+      }, 5000);
     }
   };
   return (
@@ -78,8 +79,16 @@ const VerifyEmail = () => {
               onError={(e) => handleImageError(e)}
             />
           </div>
-          {error && <Notify message={error} />}
-          {message && <Notify variant="success" message={message} />}
+          {error && (
+            <div className="mt-3 p-2">
+              <Notify message={error} />
+            </div>
+          )}
+          {message && (
+            <div className="mt-3 px-4">
+              <Notify variant="success" message={message} />
+            </div>
+          )}
           <Card.Body className="p-5">
             <Card.Title>Veirfy Email</Card.Title>
             <Form onSubmit={handleEmailVerification}>
@@ -88,11 +97,13 @@ const VerifyEmail = () => {
                 <Form.Control
                   type="email"
                   aria-describedby="emailHelp"
-                  onChange={(e) =>
-                    setPayload((prev) => {
-                      return { ...prev, email: e.target.value };
-                    })
-                  }
+                  // onChange={() =>
+                  //   setPayload((prev) => {
+                  //     return { ...prev, email: state };
+                  //   })
+                  // }
+                  value={state}
+                  disabled
                   required
                 />
               </Form.Group>
@@ -100,12 +111,8 @@ const VerifyEmail = () => {
                 <Form.Group className="mb-3" controlId="exampleInputOTP">
                   <Form.Label>OTP</Form.Label>
                   <Form.Control
-                    type="otp"
-                    onChange={(e) =>
-                      setPayload((prev) => {
-                        return { ...prev, otp: e.target.value };
-                      })
-                    }
+                    type="text"
+                    onChange={(e) => setOtp(e.target.value)}
                     required
                   />
                 </Form.Group>

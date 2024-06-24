@@ -12,6 +12,7 @@ import Dashboard from "./pages/admin/Dashboard";
 
 import ThemeContext from "./context/ThemeContext";
 import VerifyEmail from "./pages/VerifyEmail";
+import ForgetPassword from "./pages/ForgetPassword";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/login" element={<Login />}></Route>
         <Route path="/register" element={<Register />}></Route>
         <Route path="/verify-email" element={<VerifyEmail />}></Route>
+        <Route path="/forget-password" element={<ForgetPassword />}></Route>
         <Route path="/admin">
           <Route index element={<Dashboard />} />
         </Route>

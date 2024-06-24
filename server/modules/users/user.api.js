@@ -61,7 +61,7 @@ router.post("/login", async (request, response, next) => {
 router.post("/generate-email-token", async (request, response, next) => {
   try {
     const result = await userController.generateToken(request.body);
-    response.json({ msg: "Generated User Token", data: result });
+    response.json({ msg: "User Token Sent to Your Email", data: result });
   } catch (error) {
     next(error); // sends control flow or the error to app.js
   }
