@@ -1,11 +1,14 @@
+import { Outlet } from "react-router-dom";
 import UserFooter from "./UserFooter";
 import UserNavbar from "./UserNavbar";
 
-const UserLayout = ({ children }) => {
+const UserLayout = () => {
   return (
     <>
       <UserNavbar />
-      {children}
+      <main style={{ minHeight: "80vh", paddingTop:"3rem" }}>
+        <Outlet/>
+      </main>
       <UserFooter />
     </>
   );

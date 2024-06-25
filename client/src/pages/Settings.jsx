@@ -1,9 +1,9 @@
 import { useThemeContext } from "../context/ThemeContext";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import Button from "react-bootstrap/esm/Button";
 import { useNavigate } from "react-router-dom";
 
-const Homepage = () => {
+const Settings = () => {
   // changing theme will be in users settings
   const { toggleTheme } = useThemeContext();
   const navigate = useNavigate();
@@ -24,11 +24,11 @@ const Homepage = () => {
         <h1>Welcome to Movie Mate</h1>
         <div className="d-flex justify-content-evenly items-center">
           <Button onClick={toggleTheme}>Change Theme</Button>
-          <Button onClick={() => navigate("/login")}>Login</Button>
+          {/* <Button onClick={() => navigate("/")}>Home</Button> */}
         </div>
       </div>
     </div>
   );
 };
 
-export default Homepage;
+export default Settings;
