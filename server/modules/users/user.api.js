@@ -9,7 +9,7 @@ const userController = require("./user.controller");
 const multer = require("multer");
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/upload");
+    cb(null, "public/upload/users");
   },
   filename: (req, file, cb) => {
     cb(

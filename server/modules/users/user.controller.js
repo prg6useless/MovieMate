@@ -30,6 +30,8 @@ const create = async (payload) => {
   const newUser = await userModel.findOne({ email });
   if (newUser) throw new Error("user already exists");
   payload.password = generateHash(password);
+  payload.isEmailVerified =
+    process.env.EMAIL_VERIFICATION_REQUIRED === "false" ? true : false;
   const result = await userModel.create(payload);
   myEvent.emit("sendMail", email);
   return result;
