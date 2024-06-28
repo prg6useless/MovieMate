@@ -5,12 +5,16 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Logo from "../assets/movie-mate-logo-2.png";
 
+import { FaCartPlus } from "react-icons/fa";
+
 import { Link, useNavigate } from "react-router-dom";
+
+import "./UserNavbar.css";
 
 const UserNavbar = () => {
   const navigate = useNavigate();
   return (
-    <Navbar expand="lg" className="bg-body-tertiary position-fixed w-100">
+    <Navbar expand="lg" className="position-fixed w-100" id="mainNavbar">
       <Container fluid>
         <Navbar.Brand>
           <img src={Logo} height={30} />
@@ -33,14 +37,14 @@ const UserNavbar = () => {
             </Link>
           </Nav>
           <Form className="d-flex">
-            {/* <Form.Control
-              type="search"
-              placeholder="Search"
-              className="me-2"
-              aria-label="Search"
-            />
-            <Button variant="outline-success">Search</Button> */}
+            <Link to="/cart">
+              <Button variant="success" className="d-flex align-items-center">
+                <FaCartPlus />
+                <span className="ps-2">1</span>
+              </Button>
+            </Link>
             <Button
+              className="mx-3"
               onClick={() => navigate("/login")}
               variant="outline-success"
             >

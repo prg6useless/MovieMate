@@ -6,8 +6,8 @@ const UserLayout = () => {
   return (
     <>
       <UserNavbar />
-      <main style={{ minHeight: "80vh", paddingTop:"3rem" }}>
-        <Outlet/>
+      <main style={{ minHeight: "80vh", paddingTop: "5rem" }}>
+        <Outlet />
       </main>
       <UserFooter />
     </>

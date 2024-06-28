@@ -33,7 +33,7 @@ function App() {
         <Route path="/" element={<UserLayout />}>
           <Route index element={<Home />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/movie-detail" element={<MovieDetail />} />
+          <Route path="/movies/:slug" element={<MovieDetail />} />
           <Route path="/order" element={<Order />} />
           <Route path="/settings" element={<Settings />} />
         </Route>

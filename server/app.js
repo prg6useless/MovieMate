@@ -1,8 +1,8 @@
 const express = require("express");
 require("dotenv").config();
-const cors = require("cors")
+const cors = require("cors");
 const route = require("./routes/index");
-// const morgan = require("morgan");
+const morgan = require("morgan");
 
 const app = express();
 const port = Number(process.env.PORT);
@@ -22,7 +22,7 @@ app.use(express.json());
 //   next();
 // });
 
-// app.use(morgan("combined"));
+app.use(morgan("short"));
 app.use("/", route);
 
 // database connection
