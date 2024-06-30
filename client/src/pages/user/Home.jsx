@@ -14,9 +14,15 @@ import { Link } from "react-router-dom";
 import { useMovies } from "../../hooks/useMovies";
 import { useState, useEffect, useCallback } from "react";
 
+import { useDispatch, useSelector } from "react-redux";
+
+import { add } from "../../slices/cartSlice";
+
 import "./Home.css";
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const { cart } = useSelector((state) => state.cart);
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(1);
   const [title, setTitle] = useState("");
@@ -45,7 +51,6 @@ const Home = () => {
 
   // const totalMovies = allMovie?.data?.total || 0;
   // const totalPages = Math.ceil(totalMovies / limit);
-
   return (
     <div>
       <main>
@@ -87,11 +92,26 @@ const Home = () => {
                           <Link to={`/movies/${movie?.slug}`}>
                             <Button variant="primary">Buy Movie</Button>
                           </Link>
-                          <Link to="/cart">
-                            <Button variant="success">
-                              <FaCartPlus />
-                            </Button>
-                          </Link>
+                          <Button
+                            variant="success"
+                            className="d-flex align-items-center"
+                            onClick={() => {
+                              dispatch(add(movie));
+                            }}
+                          >
+                            <FaCartPlus />
+                            <span className="ps-2">
+                              (
+                              {cart.length > 0 &&
+                              cart.filter((item) => item?.slug === movie?.slug)
+                                ?.length > 0
+                                ? cart.filter(
+                                    (item) => item?.slug === movie?.slug
+                                  )[0]?.quantity
+                                : 0}
+                              )
+                            </span>
+                          </Button>
                         </div>
                       </div>
                       <div className="col-md-5 ">
@@ -185,8 +205,25 @@ const Home = () => {
                       <Link to={`/movies/${movies?.slug}`}>
                         <Button variant="primary">Buy Movie</Button>
                       </Link>
-                      <Button variant="success">
+                      <Button
+                        variant="success"
+                        className="d-flex align-items-center"
+                        onClick={() => {
+                          dispatch(add(movies));
+                        }}
+                      >
                         <FaCartPlus />
+                        <span className="ps-2">
+                          (
+                          {cart.length > 0 &&
+                          cart.filter((item) => item?.slug === movies?.slug)
+                            ?.length > 0
+                            ? cart.filter(
+                                (item) => item?.slug === movies?.slug
+                              )[0]?.quantity
+                            : 0}
+                          )
+                        </span>
                       </Button>
                       <small className="text-muted">{movies?.duration}</small>
                     </div>

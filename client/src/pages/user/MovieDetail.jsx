@@ -5,12 +5,18 @@ import { Card, Button, Row, Col } from "react-bootstrap";
 
 import Image from "react-bootstrap/Image";
 
+import { FaCartPlus } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+
+import { add } from "../../slices/cartSlice";
+
 import "./MovieDetail.css";
 
 const MovieDetail = () => {
+  const dispatch = useDispatch();
+  const { cart } = useSelector((state) => state.cart);
   const { pathname } = useLocation();
   const { movie, getBySlug } = useMovies();
-  console.log(movie);
 
   useEffect(() => {
     const moviedetail = pathname.split("/")[2];
@@ -67,9 +73,24 @@ const MovieDetail = () => {
                   </Button>
                   <Button
                     variant="success"
-                    disabled={movie?.data?.seats < 1 ? true : false}
+                    className="d-flex align-items-center"
+                    onClick={() => {
+                      dispatch(add(movie?.data));
+                    }}
                   >
-                    Add to Cart
+                    <span className="pe-2">Add to Cart</span>
+                    <FaCartPlus />
+                    <span className="ps-2">
+                      (
+                      {cart.length > 0 &&
+                      cart.filter((item) => item?.slug === movie?.data?.slug)
+                        ?.length > 0
+                        ? cart.filter(
+                            (item) => item?.slug === movie?.data?.slug
+                          )[0]?.quantity
+                        : 0}
+                      )
+                    </span>
                   </Button>
                 </div>
               </Card.Body>

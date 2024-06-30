@@ -5,6 +5,8 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Logo from "../assets/movie-mate-logo-2.png";
 
+import { useSelector } from "react-redux";
+
 import { FaCartPlus } from "react-icons/fa";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -12,6 +14,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./UserNavbar.css";
 
 const UserNavbar = () => {
+  const { quantity } = useSelector((state) => state.cart);
   const navigate = useNavigate();
   return (
     <Navbar expand="lg" className="position-fixed w-100" id="mainNavbar">
@@ -40,7 +43,7 @@ const UserNavbar = () => {
             <Link to="/cart">
               <Button variant="success" className="d-flex align-items-center">
                 <FaCartPlus />
-                <span className="ps-2">1</span>
+                <span className="ps-2">({quantity})</span>
               </Button>
             </Link>
             <Button
