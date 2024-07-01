@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Container, Row, Col, Button, Form, Table } from "react-bootstrap";
 // import { useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 import {
   removeItem,
@@ -51,6 +51,7 @@ const FullCart = ({
   dispatch,
   totalAmount,
 }) => {
+  const navigate = useNavigate();
   return (
     <>
       <div className="d-flex justify-content-center p-4">
@@ -74,7 +75,7 @@ const FullCart = ({
                       <Button variant="link">
                         <RiDeleteBin6Line
                           color="red"
-                          onClick={() => dispatch(removeItem(item))}
+                          onClick={() => dispatch(removeItem(item?.slug))}
                         />
                       </Button>
                     </td>
@@ -120,9 +121,14 @@ const FullCart = ({
                 </tr>
               </tbody>
             </Table>
-            <Button variant="success" block>
-              PROCEED TO CHECKOUT
-            </Button>
+            <div className="d-flex justify-content-start align-items-center w-50 gap-4">
+              <Button variant="danger" onClick={() => dispatch(removeAll())}>
+                REMOVE ALL ITEMS
+              </Button>
+              <Button variant="success" onClick={() => navigate("/checkout")}>
+                PROCEED TO CHECKOUT
+              </Button>
+            </div>
           </Row>
         </Container>
       </div>

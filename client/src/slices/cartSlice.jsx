@@ -33,10 +33,10 @@ const cartSlice = createSlice({
     },
     removeItem: (state, action) => {
       const newItem = state?.cart.filter(
-        (item) => item?.slug !== action?.payload?.slug
+        (item) => item?.slug !== action?.payload
       );
       state.cart = newItem;
-      state.quantity = newItem.reduce((acc, obj) => acc + obj.seats, 0);
+      state.quantity = newItem.reduce((acc, obj) => acc + obj.quantity, 0);
     },
     increaseQuantity: (state, action) => {
       const existingItem = state?.cart.find(
