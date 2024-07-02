@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Container, Row, Col, Button, Form, Table } from "react-bootstrap";
+import { Container, Row, Button, Table } from "react-bootstrap";
 // import { useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
   removeItem,
@@ -44,7 +44,6 @@ const Cart = () => {
 
 const FullCart = ({
   cart,
-  quantity,
   increaseQuantity,
   decreaseQuantity,
   removeItem,

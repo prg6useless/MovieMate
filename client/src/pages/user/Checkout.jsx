@@ -14,7 +14,23 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 
 const Checkout = () => {
-  const [payload, usePayoad] = useState({
+  const [payload, setPayload] = useState({
+    type: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
+  const { cart, quantity } = useSelector((state) => state.cart);
+  console.log({ cart, quantity });
+
+  const totalAmount = () =>
+    cart
+      .reduce((acc, obj) => acc + obj.quantity * obj.price, 0)
+      .toLocaleString();
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    console.log(payload);
     // buyer: "664f1ef74d47a275f5eb47f3",
     // total: 160,
     // products: [{
@@ -23,13 +39,6 @@ const Checkout = () => {
     //   amount: 100,
     //   movie: "664dd86b32ab3b7d89dd113e",
     // }],
-  });
-  const { cart, quantity } = useSelector((state) => state.cart);
-  console.log({ cart, quantity });
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    console.log("form");
   };
   return (
     <>
@@ -41,37 +50,42 @@ const Checkout = () => {
               <span className="badge badge-secondary badge-pill">3</span>
             </h4>
             <ListGroup className="mb-3">
-              <ListGroup.Item className="d-flex justify-content-between lh-condensed">
-                <div>
-                  <h6 className="my-0">Product name</h6>
-                  <small className="text-muted">Brief description</small>
-                </div>
-                <span className="text-muted">$12</span>
-              </ListGroup.Item>
-              <ListGroup.Item className="d-flex justify-content-between lh-condensed">
-                <div>
-                  <h6 className="my-0">Second product</h6>
-                  <small className="text-muted">Brief description</small>
-                </div>
-                <span className="text-muted">$8</span>
-              </ListGroup.Item>
-              <ListGroup.Item className="d-flex justify-content-between lh-condensed">
-                <div>
-                  <h6 className="my-0">Third item</h6>
-                  <small className="text-muted">Brief description</small>
-                </div>
-                <span className="text-muted">$5</span>
-              </ListGroup.Item>
-              <ListGroup.Item className="d-flex justify-content-between bg-light">
-                <div className="text-success">
-                  <h6 className="my-0">Promo code</h6>
-                  <small>EXAMPLECODE</small>
-                </div>
-                <span className="text-success">-$5</span>
-              </ListGroup.Item>
+              {cart?.length > 0 &&
+                cart?.map((item, index) => {
+                  return (
+                    <ListGroup.Item
+                      className="d-flex justify-content-between lh-condensed gap-1"
+                      key={index}
+                    >
+                      <div>
+                        <img
+                          src={item?.poster}
+                          style={{
+                            height: "40px",
+                            width: "40px",
+                            objectFit: "cover",
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <h6 className="my-0">{item?.title}</h6>
+                        <small className="text-muted">
+                          {item?.synopsis.slice(0, 30).concat("...")}
+                        </small>
+                      </div>
+                      <span className="text-muted">{item?.quantity}</span>
+                      <span className="text-muted">
+                        ${item?.price.toLocaleString()}
+                      </span>
+                      <span>
+                        ${(item?.price * item?.quantity).toLocaleString()}
+                      </span>
+                    </ListGroup.Item>
+                  );
+                })}
               <ListGroup.Item className="d-flex justify-content-between">
-                <span>Total (USD)</span>
-                <strong>$20</strong>
+                <span>Total</span>
+                <strong>${totalAmount()}</strong>
               </ListGroup.Item>
             </ListGroup>
 
@@ -87,19 +101,19 @@ const Checkout = () => {
             </Card>
           </Col>
           <Col md={8} className="order-md-1">
-            <h4 className="mb-3">Billing address</h4>
-            <Form
-              className="needs-validation"
-              noValidate
-              onSubmit={handleFormSubmit}
-            >
+            <h4 className="mb-3">Billing Information</h4>
+            <Form className="needs-validation" onSubmit={handleFormSubmit}>
               <Row>
                 <Col md={6} className="mb-3">
                   <Form.Label htmlFor="firstName">First name</Form.Label>
                   <Form.Control
                     type="text"
                     id="firstName"
-                    placeholder=""
+                    onChange={(e) =>
+                      setPayload((prev) => {
+                        return { ...prev, firstName: e.target.value };
+                      })
+                    }
                     required
                   />
                   <Form.Control.Feedback type="invalid">
@@ -111,7 +125,11 @@ const Checkout = () => {
                   <Form.Control
                     type="text"
                     id="lastName"
-                    placeholder=""
+                    onChange={(e) =>
+                      setPayload((prev) => {
+                        return { ...prev, lastName: e.target.value };
+                      })
+                    }
                     required
                   />
                   <Form.Control.Feedback type="invalid">
@@ -121,30 +139,16 @@ const Checkout = () => {
               </Row>
 
               <Form.Group className="mb-3">
-                <Form.Label htmlFor="username">Username</Form.Label>
-                <InputGroup>
-                  <InputGroup>
-                    <InputGroup.Text>@</InputGroup.Text>
-                    <Form.Control
-                      type="text"
-                      id="username"
-                      placeholder="Username"
-                      required
-                    />
-                  </InputGroup>
-
-                  <Form.Control.Feedback type="invalid">
-                    Your username is required.
-                  </Form.Control.Feedback>
-                </InputGroup>
-              </Form.Group>
-
-              <Form.Group className="mb-3">
                 <Form.Label htmlFor="email">Email</Form.Label>
                 <Form.Control
                   type="email"
                   id="email"
                   placeholder="you@example.com"
+                  onChange={(e) =>
+                    setPayload((prev) => {
+                      return { ...prev, email: e.target.value };
+                    })
+                  }
                 />
                 <Form.Control.Feedback type="invalid">
                   Please enter a valid email address.
@@ -159,14 +163,24 @@ const Checkout = () => {
                 <Form.Check
                   type="radio"
                   label="Esewa"
-                  id="esewa"
+                  value="Online"
                   name="paymentMethod"
+                  onChange={(e) =>
+                    setPayload((prev) => {
+                      return { ...prev, type: e.target.value };
+                    })
+                  }
                 />
                 <Form.Check
                   type="radio"
                   label="Cash On Delivery"
-                  id="khalti"
+                  value="Cash On Delivery"
                   name="paymentMethod"
+                  onChange={(e) =>
+                    setPayload((prev) => {
+                      return { ...prev, type: e.target.value };
+                    })
+                  }
                 />
                 <Form.Control.Feedback type="invalid">
                   Please select a payment method.
@@ -174,7 +188,7 @@ const Checkout = () => {
               </Form.Group>
 
               <hr className="mb-4" />
-              <Button variant="primary" size="lg" block type="submit">
+              <Button variant="primary" size="lg" type="submit">
                 Continue to checkout
               </Button>
             </Form>
