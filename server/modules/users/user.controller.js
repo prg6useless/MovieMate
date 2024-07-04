@@ -53,7 +53,7 @@ const login = async (payload) => {
   };
   const Token = signToken(tokenPaylaod);
   if (!Token) throw new Error("Something went wrong");
-  return Token;
+  return { Token, name: user?.name, email: user?.email, id: user?._id };
 };
 
 const generateToken = async (payload) => {

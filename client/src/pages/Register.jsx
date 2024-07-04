@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Logo from "../assets/movie-mate-logo-2.png";
-import Notify from "../components/Notify";
+import { Notify } from "../components/Notify";
 import { Link, useNavigate } from "react-router-dom";
 
 import { instance } from "../utils/axios";
@@ -29,7 +29,6 @@ const Register = () => {
       setTimeout(() => {
         navigate("/verify-email", { replace: true });
       }, 1500);
-      
     } catch (error) {
       const errorMsg =
         error?.response?.data?.msg || "Something went wrong. Please try again";

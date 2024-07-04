@@ -3,10 +3,10 @@ import AdminSidebar from "./AdminSidebar";
 
 const AdminLayout = () => {
   return (
-    <>
-      <AdminSidebar />
+    <div className="d-flex">
+      <AdminSidebar/>
       <Outlet />
-    </>
+    </div>
   );
 };
 

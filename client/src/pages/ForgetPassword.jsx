@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Logo from "../assets/movie-mate-logo-2.png";
 import { useNavigate } from "react-router-dom";
-import Notify from "../components/Notify";
+import { Notify } from "../components/Notify";
 
 import { useState } from "react";
 import { instance } from "../utils/axios";

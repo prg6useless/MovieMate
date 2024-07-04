@@ -6,7 +6,7 @@ import { getToken } from "../utils/storage";
 // user and admin routes
 const list = (limit, page, title) => {
   return instance.get(
-    `${APIs.MOVIES}??limit=${limit}&page=${page}&title=${title}`
+    `${APIs.MOVIES}?limit=${limit}&page=${page}&title=${title}`
   );
 };
 const getBySlug = (slug) => {

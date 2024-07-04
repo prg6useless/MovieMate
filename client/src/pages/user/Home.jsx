@@ -1,8 +1,4 @@
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Button, Card, Form, Row, Col } from "react-bootstrap";
 
 // import Pagination from "react-bootstrap/Pagination";
 import Spinner from "react-bootstrap/Spinner";
@@ -18,17 +14,18 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { add } from "../../slices/cartSlice";
 
+import Paginate from "../../components/Paginate";
 import "./Home.css";
 
 const Home = () => {
   const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.cart);
-  const [limit, setLimit] = useState(5);
+  const [limit, setLimit] = useState(4);
   const [page, setPage] = useState(1);
   const [title, setTitle] = useState("");
   const [featuredMovie, setFeaturedmovie] = useState([]);
 
-  const { allMovie, error, msg, loading, getAllMovies } = useMovies();
+  const { allMovie, loading, getAllMovies } = useMovies();
 
   const getTop5Movies = useCallback(() => {
     const result = allMovie?.data?.movies.slice(0, 5) || [];
@@ -235,39 +232,15 @@ const Home = () => {
             <>No Movies Found</>
           )}
         </div>
-        {/* pagination */}
-        {/* <div className="d-flex justify-content-center">
-          <Pagination>
-            <Pagination.First
-              onClick={() => setPage(1)}
-              disabled={page === 1}
-            />
-            <Pagination.Prev
-              onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-              disabled={page === 1}
-            />
-            {allMovie?.data?.movies.map((i, index) => {
-              return (
-                <Pagination.Item
-                  key={index + 1}
-                  active={index + 1 === page}
-                  onClick={() => setPage(index + 1)}
-                >
-                  {index + 1}
-                </Pagination.Item>
-              );
-            })}
-
-            <Pagination.Next
-              onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-              disabled={page === totalPages}
-            />
-            <Pagination.Last
-              onClick={() => setPage(totalPages)}
-              disabled={page === totalPages}
-            />
-          </Pagination>
-        </div> */}
+        {allMovie?.data?.total && (
+          <Paginate
+            total={allMovie?.data?.total}
+            limit={limit}
+            currentPage={page}
+            setCurrentPage={setPage}
+            setLimit={setLimit}
+          />
+        )}
       </div>
     </div>
   );

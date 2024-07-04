@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Logo from "../assets/movie-mate-logo-2.png";
 import { Link, useNavigate } from "react-router-dom";
-import Notify from "../components/Notify";
+import { Notify } from "../components/Notify";
 
 import { useEffect, useState } from "react";
 import { instance } from "../utils/axios";
@@ -26,10 +26,19 @@ const Login = () => {
     try {
       e.preventDefault();
       const { data } = await instance.post("/users/login", payload);
-      const { data: token, msg } = data;
+      const { data: userInfo, msg } = data;
       setMessage(msg);
-      setToken("token", token);
-      navigate("/admin");
+      setToken("token", userInfo?.Token);
+      setToken("currentUser", {
+        name: userInfo?.name,
+        email: userInfo?.email,
+        id: userInfo?.id,
+      });
+      if (localStorage.getItem("redirectUrl")) {
+        navigate(localStorage.getItem("redirectUrl"));
+      } else {
+        navigate("/admin");
+      }
     } catch (error) {
       const errorMsg =
         error?.response?.data?.msg || "Something went wrong. Please try again";

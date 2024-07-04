@@ -1,15 +1,8 @@
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  ListGroup,
-  Form,
-  Button,
-  InputGroup,
-} from "react-bootstrap";
+import { Container, Row, Col, ListGroup, Form, Button } from "react-bootstrap";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+import { NotifyWithLink } from "../../components/Notify";
 
 import { useSelector } from "react-redux";
 
@@ -20,29 +13,45 @@ const Checkout = () => {
     lastName: "",
     email: "",
   });
-  const { cart, quantity } = useSelector((state) => state.cart);
-  console.log({ cart, quantity });
+  const { cart } = useSelector((state) => state.cart);
+
+  const userInfo = JSON.parse(localStorage.getItem("currentUser"));
 
   const totalAmount = () =>
-    cart
-      .reduce((acc, obj) => acc + obj.quantity * obj.price, 0)
-      .toLocaleString();
+    cart.reduce((acc, obj) => acc + obj.quantity * obj.price, 0);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log(payload);
-    // buyer: "664f1ef74d47a275f5eb47f3",
-    // total: 160,
-    // products: [{
-    //   quantity: 2,
-    //   price: 50,
-    //   amount: 100,
-    //   movie: "664dd86b32ab3b7d89dd113e",
-    // }],
+    const { firstName, lastName, ...rest } = payload;
+    rest.name = firstName.concat(" ", lastName);
+    rest.products = cart.map((item) => {
+      return {
+        quantity: item?.quantity,
+        price: item?.price,
+        amount: item?.price * item?.quantity,
+        movie: item?._id,
+      };
+    });
+    rest.buyer = "";
+    rest.total = totalAmount();
+    console.log(rest);
   };
+
+  useEffect(() => {
+    if (userInfo?.id) {
+      localStorage.removeItem("redirectUrl");
+    }
+  }, [userInfo?.id]);
   return (
     <>
       <Container className="mt-5">
+        {!localStorage.getItem("token") && !userInfo && (
+          <NotifyWithLink
+            message={"Please Login to buy the tickets"}
+            link="/checkout"
+            forward="/login"
+          />
+        )}
         <Row>
           <Col md={4} className="order-md-2 mb-4">
             <h4 className="d-flex justify-content-between align-items-center mb-3">
@@ -85,20 +94,9 @@ const Checkout = () => {
                 })}
               <ListGroup.Item className="d-flex justify-content-between">
                 <span>Total</span>
-                <strong>${totalAmount()}</strong>
+                <strong>${totalAmount().toLocaleString()}</strong>
               </ListGroup.Item>
             </ListGroup>
-
-            <Card className="p-2">
-              <Form>
-                <InputGroup>
-                  <Form.Control type="text" placeholder="Promo code" />
-                  <Button type="submit" variant="secondary">
-                    Redeem
-                  </Button>{" "}
-                </InputGroup>
-              </Form>
-            </Card>
           </Col>
           <Col md={8} className="order-md-1">
             <h4 className="mb-3">Billing Information</h4>
@@ -109,12 +107,14 @@ const Checkout = () => {
                   <Form.Control
                     type="text"
                     id="firstName"
+                    placeholder={userInfo && userInfo?.name.split(" ")[0]}
                     onChange={(e) =>
                       setPayload((prev) => {
                         return { ...prev, firstName: e.target.value };
                       })
                     }
                     required
+                    disabled={userInfo}
                   />
                   <Form.Control.Feedback type="invalid">
                     Valid first name is required.
@@ -125,11 +125,13 @@ const Checkout = () => {
                   <Form.Control
                     type="text"
                     id="lastName"
+                    placeholder={userInfo && userInfo?.name.split(" ")[1]}
                     onChange={(e) =>
                       setPayload((prev) => {
                         return { ...prev, lastName: e.target.value };
                       })
                     }
+                    disabled={userInfo}
                     required
                   />
                   <Form.Control.Feedback type="invalid">
@@ -143,7 +145,8 @@ const Checkout = () => {
                 <Form.Control
                   type="email"
                   id="email"
-                  placeholder="you@example.com"
+                  placeholder={userInfo?.email}
+                  disabled={userInfo}
                   onChange={(e) =>
                     setPayload((prev) => {
                       return { ...prev, email: e.target.value };
@@ -188,7 +191,12 @@ const Checkout = () => {
               </Form.Group>
 
               <hr className="mb-4" />
-              <Button variant="primary" size="lg" type="submit">
+              <Button
+                variant="primary"
+                size="lg"
+                type="submit"
+                disabled={!userInfo}
+              >
                 Continue to checkout
               </Button>
             </Form>

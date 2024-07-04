@@ -3,13 +3,13 @@ import { createContext, useState, useContext } from "react";
 const initialContext = createContext(null);
 
 const ThemeContext = ({ children }) => {
-  // const [name, setName] = useState("saral");
   const [theme, setTheme] = useState("dark");
+  const body = document.getElementsByTagName("body");
+
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
-    const root = document.getElementsByTagName("body");
-    if (root) {
-      root[0].setAttribute("data-bs-theme", theme);
+    if (body) {
+      body[0].setAttribute("data-bs-theme", theme);
     }
   };
   return (

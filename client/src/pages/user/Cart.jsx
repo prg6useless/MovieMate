@@ -11,6 +11,9 @@ import {
   removeAll,
 } from "../../slices/cartSlice";
 
+
+import "../Card.css"
+
 const Cart = () => {
   const dispatch = useDispatch();
   const { cart, quantity } = useSelector((state) => state.cart);
@@ -54,13 +57,14 @@ const FullCart = ({
   return (
     <>
       <div className="d-flex justify-content-center p-4">
-        <Container className="p-5 border rounded w-80">
+        <Container className="cart authCard p-5 border rounded w-80">
           <Row>
-            <Table bordered className="text-center">
+            <Table  className="text-center">
               <thead>
                 <tr>
                   <th></th>
-                  <th>Product</th>
+                  <th>Movie Poster</th>
+                  <th>Movie Title</th>
                   <th>Price</th>
                   <th>Quantity</th>
                   <th>Available Quantity</th>
@@ -79,6 +83,7 @@ const FullCart = ({
                       </Button>
                     </td>
                     <td>
+                      {" "}
                       <img
                         src={item?.poster}
                         alt={item?.name}
@@ -88,8 +93,8 @@ const FullCart = ({
                           objectFit: "cover",
                         }}
                       />
-                      {item?.title}
                     </td>
+                    <td>{item?.title}</td>
                     <td>${item?.price}</td>
                     <td className="d-flex justify-content-between">
                       <Button

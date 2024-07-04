@@ -1,12 +1,12 @@
 import { useThemeContext } from "../context/ThemeContext";
 // import { useEffect } from "react";
 import Button from "react-bootstrap/esm/Button";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const Settings = () => {
   // changing theme will be in users settings
   const { toggleTheme } = useThemeContext();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // useEffect(() => {
   //   const root = document.getElementsByTagName("body");
