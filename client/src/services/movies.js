@@ -15,13 +15,13 @@ const getBySlug = (slug) => {
 
 // admin routes
 const create = (payload) => {
-    return instance.post(APIs.MOVIES, payload, {
-      headers: {
-        token: getToken("token"),
-        "Content-Type": "multipart/form-data",
-      },
-    });
-  };
+  return instance.post(APIs.MOVIES, payload, {
+    headers: {
+      token: getToken("token"),
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
 const update = (slug, payload) => {
   return instance.put(`${APIs.MOVIES}/${slug}`, payload, {
     headers: {

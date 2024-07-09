@@ -1,6 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import { cartReducer } from "../slices/cartSlice";
+// import { orderReducer } from "../slices/orderSlice";
+// import { movieReducer } from "../slices/movieSlice";
 
 import {
   persistStore,
@@ -12,6 +14,7 @@ import {
   REGISTER,
   REHYDRATE,
 } from "redux-persist";
+
 import storage from "redux-persist/lib/storage"; // store in local storage
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
 
@@ -26,6 +29,8 @@ const persistCart = persistReducer(persistConfig, cartReducer);
 export const store = configureStore({
   reducer: {
     cart: persistCart,
+    // movies: movieReducer,
+    // orders: orderReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
