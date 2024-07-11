@@ -8,7 +8,11 @@ const TableContent = ({ headers = [], data = [] }) => {
           <tr>
             <th>S.No.</th>
             {headers.map((items, index) => {
-              return <th key={index} className="text-capitalize text-center">{items}</th>;
+              return (
+                <th key={index} className="text-capitalize text-center">
+                  {items}
+                </th>
+              );
             })}
             <th>Action</th>
           </tr>
