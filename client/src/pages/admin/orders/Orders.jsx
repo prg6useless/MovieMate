@@ -2,29 +2,45 @@ import TableContent from "../../../components/TableContent";
 import Paginate from "../../../components/Paginate";
 import { Button, Card, CardHeader } from "react-bootstrap";
 
-const Orders = () => {
-  const header = ["name", "email", "buyer", "type", "status", "total"];
-  const data = [
-    {
-      name: "Saral Sainju",
-      email: "saral@gmail.com",
-      buyer: 19287391273,
-      type: "Online",
-      status: "pending",
-      total: 3000,
-    },
-    {
-      name: "Saral Sainju",
-      email: "saral@gmail.com",
-      buyer: 19287391273,
-      type: "Online",
-      status: "pending",
-      total: 3000,
-    },
-  ];
+import { useDispatch, useSelector } from "react-redux";
 
-  // const handleEdit = () => {};
-  // const handleDelete = () => {};
+import {
+  listOrder,
+  setCurrentPage,
+  setLimit,
+} from "../../../slices/orderSlice";
+
+import { useEffect, useCallback } from "react";
+
+const Orders = () => {
+  const dispatch = useDispatch();
+  const { orders, limit, currentPage, total } = useSelector(
+    (state) => state.orders
+  );
+
+  const getHeaders = (data) => {
+    if (data.length === 0) return [];
+    const {
+      createdAt,
+      id,
+      _id,
+      approvedBy,
+      buyer,
+      updatedAt,
+      __v,
+      products,
+      ...rest
+    } = data[0];
+    return Object.keys(rest);
+  };
+
+  const initialFetch = useCallback(() => {
+    dispatch(listOrder({ page: currentPage, limit }));
+  }, [dispatch, currentPage, limit]);
+
+  useEffect(() => {
+    initialFetch();
+  }, [initialFetch]);
   return (
     <>
       <Card>
@@ -36,14 +52,14 @@ const Orders = () => {
         </CardHeader>
 
         <Card.Body>
-          <TableContent headers={header} data={data} />
+          <TableContent headers={getHeaders(orders)} data={orders} />
         </Card.Body>
         <Paginate
-          total={10}
-          limit={5}
-          currentPage={1}
-          setCurrentPage={()=>{}}
-          setLimit={()=>{}}
+          total={total}
+          limit={limit}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          setLimit={setLimit}
         />
       </Card>
     </>

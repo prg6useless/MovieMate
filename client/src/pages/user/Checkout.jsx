@@ -45,7 +45,6 @@ const Checkout = () => {
       });
       rest.buyer = JSON.parse(getToken("currentUser"))?.id || "";
       rest.total = totalAmount();
-      console.log({ rest });
       const { data } = await OrderServices.create(rest);
       setMsg(data?.msg);
       dispatch(removeAll());
