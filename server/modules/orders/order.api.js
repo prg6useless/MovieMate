@@ -16,7 +16,11 @@ const middleWare = (req, res, next) => {
 router.post("/", secureMiddleWare(), async (req, res, next) => {
   try {
     const result = await orderController.create(req.body);
-    res.json({ msg: "Order Created", data: result });
+    res.json({
+      msg: "Order Created Successfully. Thank you for choosing Movie Mate",
+      data: result,
+    });
+    // TODO add email feature to send order details
   } catch (e) {
     next(e);
   }

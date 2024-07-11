@@ -6,6 +6,7 @@ const ErrorPage = () => {
   return (
     <>
       <div className="">
+        404 Page Not Found
         <Button onClick={() => navigate("/")}>Go Back Home</Button>
       </div>
     </>

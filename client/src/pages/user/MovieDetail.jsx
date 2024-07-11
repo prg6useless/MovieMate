@@ -20,7 +20,6 @@ const MovieDetail = () => {
 
   useEffect(() => {
     const moviedetail = pathname.split("/")[2];
-    console.log(moviedetail);
     getBySlug(moviedetail);
   }, [pathname, getBySlug]);
 

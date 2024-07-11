@@ -1,265 +1,151 @@
+import { Navbar, Nav, Dropdown } from "react-bootstrap";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { getToken, removeToken } from "../utils/storage";
+
+import { FaUserCircle } from "react-icons/fa";
+
 const AdminSidebar = () => {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const user = getToken("currentUser")
+    ? JSON.parse(getToken("currentUser"))
+    : "";
+    
+  const isAdmin = user?.roles?.includes("admin") || false;
+
+  const handleSignOut = () => {
+    removeToken();
+    removeToken("currentUser");
+    navigate("/login", { replace: true });
+  };
   return (
     <>
-      {/* <div className="flex">
-      <div className="flex flex-none w-64 h-screen flex-col justify-between border-e bg-white">
-        <div className="px-4 py-6">
-          <span className="grid h-10 w-32 place-content-center rounded-lg bg-gray-100 text-xs text-gray-600">
-            Logo
-          </span>
-
-          <ul className="mt-6 space-y-1">
-            <li>
-              <a
-                href="#"
-                className="block rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700"
-              >
-                General
-              </a>
-            </li>
-
-            <li>
-              <details className="group [&_summary::-webkit-details-marker]:hidden">
-                <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                  <span className="text-sm font-medium"> Teams </span>
-
-                  <span className="shrink-0 transition duration-300 group-open:-rotate-180">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </span>
-                </summary>
-
-                <ul className="mt-2 space-y-1 px-4">
-                  <li>
-                    <a
-                      href="#"
-                      className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                    >
-                      Banned Users
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      href="#"
-                      className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                    >
-                      Calendar
-                    </a>
-                  </li>
-                </ul>
-              </details>
-            </li>
-
-            <li>
-              <a
-                href="#"
-                className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-              >
-                Billing
-              </a>
-            </li>
-
-            <li>
-              <a
-                href="#"
-                className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-              >
-                Invoices
-              </a>
-            </li>
-
-            <li>
-              <details className="group [&_summary::-webkit-details-marker]:hidden">
-                <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                  <span className="text-sm font-medium"> Account </span>
-
-                  <span className="shrink-0 transition duration-300 group-open:-rotate-180">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </span>
-                </summary>
-
-                <ul className="mt-2 space-y-1 px-4">
-                  <li>
-                    <a
-                      href="#"
-                      className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                    >
-                      Details
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      href="#"
-                      className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                    >
-                      Security
-                    </a>
-                  </li>
-
-                  <li>
-                    <form action="#">
-                      <button
-                        type="submit"
-                        className="w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700"
-                      >
-                        Logout
-                      </button>
-                    </form>
-                  </li>
-                </ul>
-              </details>
-            </li>
-          </ul>
-        </div>
-
-        <div className="sticky inset-x-0 bottom-0 border-t border-gray-100">
-          <a
-            href="#"
-            className="flex items-center gap-2 bg-white p-4 hover:bg-gray-50"
-          >
-            <img
-              alt=""
-              src="https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-              className="size-10 rounded-full object-cover"
-            />
-
-            <div>
-              <p className="text-xs">
-                <strong className="block font-medium">Eric Frusciante</strong>
-
-                <span> eric@frusciante.com </span>
-              </p>
-            </div>
-          </a>
-        </div>
-      </div>
-    </div> */}
       <div
-        className="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark"
-        style={{ width: "280px",height:"100vh" }}
+        style={{ height: "100vh", width: "280px" }}
+        className="bg-dark text-white d-flex flex-column p-3"
       >
-        <a
-          href="/"
-          className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
-        >
+        <Navbar.Brand href="/admin" className="text-white mb-3">
           <svg className="bi me-2" width="40" height="32">
-            <use xlink:href="#bootstrap" />
+            <use xlinkHref="#moviemate" />
           </svg>
-          <span className="fs-4">Sidebar</span>
-        </a>
+          <span className="fs-4">MovieMate</span>
+        </Navbar.Brand>
         <hr />
-        <ul className="nav nav-pills flex-column mb-auto">
-          <li className="nav-item">
-            <a href="#" className="nav-link active" aria-current="page">
+        <Nav className="nav nav-pills flex-column mb-auto">
+          <Nav.Item>
+            <Link
+              to="/"
+              className={
+                pathname === "/admin"
+                  ? "nav-link active"
+                  : "nav-link text-white"
+              }
+              aria-current="page"
+            >
               <svg className="bi me-2" width="16" height="16">
-                <use xlink:href="#home" />
+                <use xlinkHref="#home" />
               </svg>
               Home
-            </a>
-          </li>
-          <li>
-            <a href="#" className="nav-link text-white">
+            </Link>
+          </Nav.Item>
+          {isAdmin && (
+            <>
+              <Nav.Item>
+                <Link
+                  to="/admin/users"
+                  className={
+                    pathname === "/admin/users"
+                      ? "nav-link active"
+                      : "nav-link text-white"
+                  }
+                >
+                  <svg className="bi me-2" width="16" height="16">
+                    <use xlinkHref="#users" />
+                  </svg>
+                  Users
+                </Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Link
+                  to="/admin/movies"
+                  className={
+                    pathname === "/admin/movies"
+                      ? "nav-link active"
+                      : "nav-link text-white"
+                  }
+                >
+                  <svg className="bi me-2" width="16" height="16">
+                    <use xlinkHref="#movies" />
+                  </svg>
+                  Movies
+                </Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Link
+                  to="/admin/orders"
+                  className={
+                    pathname === "/admin/orders"
+                      ? "nav-link active"
+                      : "nav-link text-white"
+                  }
+                >
+                  <svg className="bi me-2" width="16" height="16">
+                    <use xlinkHref="#orders" />
+                  </svg>
+                  Orders
+                </Link>
+              </Nav.Item>
+            </>
+          )}
+
+          <Nav.Item>
+            <Link
+              to="/admin/settings"
+              className={
+                pathname === "/admin/settings"
+                  ? "nav-link active"
+                  : "nav-link text-white"
+              }
+            >
               <svg className="bi me-2" width="16" height="16">
-                <use xlink:href="#speedometer2" />
+                <use xlinkHref="#settings" />
               </svg>
-              Dashboard
-            </a>
-          </li>
-          <li>
-            <a href="#" className="nav-link text-white">
-              <svg className="bi me-2" width="16" height="16">
-                <use xlink:href="#table" />
-              </svg>
-              Orders
-            </a>
-          </li>
-          <li>
-            <a href="#" className="nav-link text-white">
-              <svg className="bi me-2" width="16" height="16">
-                <use xlink:href="#grid" />
-              </svg>
-              Products
-            </a>
-          </li>
-          <li>
-            <a href="#" className="nav-link text-white">
-              <svg className="bi me-2" width="16" height="16">
-                <use xlink:href="#people-circle" />
-              </svg>
-              Customers
-            </a>
-          </li>
-        </ul>
+              Settings
+            </Link>
+          </Nav.Item>
+        </Nav>
         <hr />
-        <div className="dropdown">
-          <a
-            href="#"
-            className="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-            id="dropdownUser1"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
+        <Dropdown>
+          <Dropdown.Toggle
+            variant="dark"
+            id="dropdown-user"
+            className="d-flex align-items-center text-white"
           >
-            <img
+            {/* <img
               src="https://github.com/mdo.png"
               alt=""
               width="32"
               height="32"
               className="rounded-circle me-2"
+            /> */}
+            <FaUserCircle
+              width="32"
+              height="32"
+              className="rounded-circle me-2"
             />
-            <strong>mdo</strong>
-          </a>
-          <ul
-            className="dropdown-menu dropdown-menu-dark text-small shadow"
-            aria-labelledby="dropdownUser1"
-          >
-            <li>
-              <a className="dropdown-item" href="#">
-                New project...
-              </a>
-            </li>
-            <li>
-              <a className="dropdown-item" href="#">
-                Settings
-              </a>
-            </li>
-            <li>
-              <a className="dropdown-item" href="#">
-                Profile
-              </a>
-            </li>
-            <li>
-              <hr className="dropdown-divider" />
-            </li>
-            <li>
-              <a className="dropdown-item" href="#">
-                Sign out
-              </a>
-            </li>
-          </ul>
-        </div>
+            <strong>{user.name}</strong>
+          </Dropdown.Toggle>
+          <Dropdown.Menu variant="dark" className="shadow">
+            <Link className="dropdown-item" to="/settings">
+              Settings
+            </Link>
+            <Link className="dropdown-item" to="/admin/profile">
+              Profile
+            </Link>
+            <Dropdown.Divider />
+            <Dropdown.Item onClick={handleSignOut}>Sign out</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       </div>
     </>
   );

@@ -17,3 +17,4 @@ export const setCurrentUser = (info) => {
   data.id = info;
   setToken("currentUser", data);
 };
+

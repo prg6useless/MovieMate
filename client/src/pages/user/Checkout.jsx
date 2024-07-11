@@ -2,39 +2,60 @@ import { Container, Row, Col, ListGroup, Form, Button } from "react-bootstrap";
 
 import { useState, useEffect } from "react";
 
-import { NotifyWithLink } from "../../components/Notify";
+import { Notify, NotifyWithLink } from "../../components/Notify";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getToken } from "../../utils/storage";
+
+import OrderServices from "../../services/orders";
+import { useNavigate } from "react-router-dom";
+import { removeAll } from "../../slices/cartSlice";
 
 const Checkout = () => {
-  const [payload, setPayload] = useState({
-    type: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-  });
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.cart);
 
   const userInfo = JSON.parse(localStorage.getItem("currentUser"));
 
+  const [payload, setPayload] = useState({
+    type: "",
+    firstName: "",
+    lastName: "",
+    email: userInfo?.email || "",
+  });
+
+  const [msg, setMsg] = useState("");
+
   const totalAmount = () =>
     cart.reduce((acc, obj) => acc + obj.quantity * obj.price, 0);
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    const { firstName, lastName, ...rest } = payload;
-    rest.name = firstName.concat(" ", lastName);
-    rest.products = cart.map((item) => {
-      return {
-        quantity: item?.quantity,
-        price: item?.price,
-        amount: item?.price * item?.quantity,
-        movie: item?._id,
-      };
-    });
-    rest.buyer = "";
-    rest.total = totalAmount();
-    console.log(rest);
+    try {
+      const { firstName, lastName, ...rest } = payload;
+      rest.name = userInfo?.name || firstName.concat(" ", lastName);
+      rest.products = cart.map((item) => {
+        return {
+          quantity: item?.quantity,
+          price: item?.price,
+          amount: item?.price * item?.quantity,
+          movie: item?._id,
+        };
+      });
+      rest.buyer = JSON.parse(getToken("currentUser"))?.id || "";
+      rest.total = totalAmount();
+      console.log({ rest });
+      const { data } = await OrderServices.create(rest);
+      setMsg(data?.msg);
+      dispatch(removeAll());
+      setTimeout(() => {
+        setMsg("");
+        navigate("/");
+      }, 2500);
+    } catch (e) {
+      setMsg("Something went again. Please try again in a moment.");
+    }
   };
 
   useEffect(() => {
@@ -98,6 +119,7 @@ const Checkout = () => {
               </ListGroup.Item>
             </ListGroup>
           </Col>
+          {msg && <Notify variant="success" message={msg} />}
           <Col md={8} className="order-md-1">
             <h4 className="mb-3">Billing Information</h4>
             <Form className="needs-validation" onSubmit={handleFormSubmit}>
@@ -173,6 +195,7 @@ const Checkout = () => {
                       return { ...prev, type: e.target.value };
                     })
                   }
+                  required
                 />
                 <Form.Check
                   type="radio"
@@ -184,6 +207,7 @@ const Checkout = () => {
                       return { ...prev, type: e.target.value };
                     })
                   }
+                  required
                 />
                 <Form.Control.Feedback type="invalid">
                   Please select a payment method.

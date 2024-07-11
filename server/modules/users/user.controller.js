@@ -50,6 +50,7 @@ const login = async (payload) => {
   const tokenPaylaod = {
     name: user?.name,
     email: user?.email,
+    roles: user?.roles,
   };
   const Token = signToken(tokenPaylaod);
   if (!Token) throw new Error("Something went wrong");

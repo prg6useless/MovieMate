@@ -7,7 +7,7 @@ import { Notify } from "../components/Notify";
 
 import { useEffect, useState } from "react";
 import { instance } from "../utils/axios";
-import { setToken } from "../utils/storage";
+import { setToken, setCurrentUser } from "../utils/storage";
 
 import "./Card.css";
 
@@ -29,11 +29,7 @@ const Login = () => {
       const { data: userInfo, msg } = data;
       setMessage(msg);
       setToken("token", userInfo?.Token);
-      setToken("currentUser", {
-        name: userInfo?.name,
-        email: userInfo?.email,
-        id: userInfo?.id,
-      });
+      setCurrentUser(userInfo?.id);
       if (localStorage.getItem("redirectUrl")) {
         navigate(localStorage.getItem("redirectUrl"));
       } else {
@@ -46,7 +42,6 @@ const Login = () => {
       errorMsg.includes("verified")
         ? setIsverified(true)
         : setIsverified(false);
-      console.log(isVerified);
     } finally {
       setTimeout(() => {
         setError("");

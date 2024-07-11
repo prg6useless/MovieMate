@@ -23,5 +23,6 @@ export const isValidRole = (sysRoles = []) => {
   const token = getToken();
   if (!token) return false;
   const { data: user } = jwtDecode(token);
+  console.log(sysRoles, user);
   return sysRoles.some((role) => user?.roles.includes(role));
 };
