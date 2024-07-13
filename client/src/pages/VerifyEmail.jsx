@@ -2,7 +2,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Logo from "../assets/movie-mate-logo-2.png";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import { Notify } from "../components/Notify";
 
 import { useState } from "react";
@@ -10,8 +10,8 @@ import { instance } from "../utils/axios";
 
 const VerifyEmail = () => {
   const navigate = useNavigate();
-  const { state } = useLocation();
   const [otp, setOtp] = useState("");
+  const [email, setEmail] = useState("");
   const [otpSent, setOtpsent] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -24,7 +24,7 @@ const VerifyEmail = () => {
     try {
       e.preventDefault();
       const { data } = await instance.post("/users/generate-email-token", {
-        email: state,
+        email,
       });
       setMessage(data?.msg);
       setOtpsent(true);
@@ -44,7 +44,7 @@ const VerifyEmail = () => {
     try {
       e.preventDefault();
       const { data } = await instance.post("/users/verify-email", {
-        email: state,
+        email,
         otp,
       });
       setMessage(data?.msg);
@@ -97,13 +97,7 @@ const VerifyEmail = () => {
                 <Form.Control
                   type="email"
                   aria-describedby="emailHelp"
-                  // onChange={() =>
-                  //   setPayload((prev) => {
-                  //     return { ...prev, email: state };
-                  //   })
-                  // }
-                  value={state}
-                  disabled
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </Form.Group>

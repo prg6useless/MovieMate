@@ -35,13 +35,17 @@ function App() {
   return (
     <ThemeContext>
       <Routes>
-        <Route path="/login" element={<Login />} />
+        {/* <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
-        <Route path="/forget-password" element={<ForgetPassword />} />
+        <Route path="/forget-password" element={<ForgetPassword />} /> */}
         {/* User Routes */}
         <Route path="/" element={<UserLayout />}>
           <Route index element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/forget-password" element={<ForgetPassword />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/movies/:slug" element={<MovieDetail />} />
           <Route path="/settings" element={<Settings />} />

@@ -99,7 +99,7 @@ const Login = () => {
           </div>
         )}
         <Card.Body className="p-5">
-          <Card.Title>Login</Card.Title>
+          <Card.Title className="text-secondary">Login</Card.Title>
           <Form onSubmit={handleLogin}>
             <Form.Group className="mb-3" controlId="exampleInputEmail1">
               <Form.Label>Email address</Form.Label>
@@ -126,10 +126,10 @@ const Login = () => {
                 required
               />
             </Form.Group>
-            <div className="mb-3 text-start">
+            <div className="mb-3 text-start ">
               Don&apos;t have an account?{" "}
               <Link
-                className="link text-decoration-none fw-bold"
+                className="link text-decoration-none fw-bold text-secondary"
                 to="/register"
               >
                 Register
@@ -137,13 +137,13 @@ const Login = () => {
             </div>
             <div className="mb-3 text-end">
               <Link
-                className="link text-decoration-none fw-bold"
+                className="link text-decoration-none fw-bold text-secondary"
                 to="/forget-password"
               >
                 Forgot Password?
               </Link>
             </div>
-            <Button type="submit" className="btn btn-primary">
+            <Button type="submit" className="btn btn-primary text-white">
               Login
             </Button>
           </Form>

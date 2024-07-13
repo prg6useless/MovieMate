@@ -1,0 +1,27 @@
+// modifying bootstrap classes
+
+$primary: #d8b100;
+$secondary: #1fb7d7;
+
+@import "../../node_modules/bootstrap/scss/bootstrap"; // import new scss codes
+
+.btn-primary ,.btn-secondary{
+  color: #fff;
+  &:hover,
+  &:focus,
+  &:active {
+    color: #fff;
+  }
+}
+
+.btn-outline-primary ,.btn-outline-secondary{
+  color: $primary;
+  border-color: $primary;
+
+  &:hover,
+  &:focus,
+  &:active {
+    color: #fff;
+    background-color: $primary;
+  }
+}

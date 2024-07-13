@@ -44,38 +44,44 @@ const UserNavbar = () => {
             style={{ maxHeight: "100px" }}
             navbarScroll
           >
-            <Link to="/" style={{ textDecoration: "none" }}>
+            <Link
+              to="/"
+              style={{ textDecoration: "none", paddingRight: "2rem" }}
+            >
               Home
             </Link>
-            <Nav.Link href="/">About Us</Nav.Link>
-            {/* <Nav.Link href="/cart">Cart</Nav.Link>*/}
 
             <Link to="/settings" style={{ textDecoration: "none" }}>
               Settings
             </Link>
           </Nav>
           <Form className="d-flex">
-            {isAdmin && (
-              <Link to="/admin">
-                <Button
-                  className="mx-3"
-                  variant="outline-success"
-                >
-                  Admin Panel
-                </Button>
-              </Link>
-            )}
+            <Link to="/admin">
+              {getToken("currentUser") ? (
+                isAdmin ? (
+                  <Button className="mx-3" variant="outline-primary">
+                    <span>Admin Panel</span>{" "}
+                  </Button>
+                ) : (
+                  <Button className="mx-3" variant="outline-primary">
+                    <span>Dashbaord</span>
+                  </Button>
+                )
+              ) : (
+                ""
+              )}
+            </Link>
             <Link to="/cart">
-              <Button variant="success" className="d-flex align-items-center">
+              <Button variant="secondary" className="d-flex align-items-center">
                 <FaCartPlus />
-                <span className="ps-2">({quantity})</span>
+                <span className="ps-2 ">({quantity})</span>
               </Button>
             </Link>
             {user?.name ? (
               <Button
                 className="mx-3"
                 onClick={handleSignOut}
-                variant="outline-success"
+                variant="outline-primary"
               >
                 Logout
               </Button>
@@ -83,7 +89,7 @@ const UserNavbar = () => {
               <Button
                 className="mx-3"
                 onClick={() => navigate("/login")}
-                variant="outline-success"
+                variant="outline-primary"
               >
                 Login
               </Button>

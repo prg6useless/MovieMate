@@ -11,8 +11,7 @@ import {
   removeAll,
 } from "../../slices/cartSlice";
 
-
-import "../Card.css"
+import "../Card.css";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -59,7 +58,7 @@ const FullCart = ({
       <div className="d-flex justify-content-center p-4">
         <Container className="cart authCard p-5 border rounded w-80">
           <Row>
-            <Table  className="text-center">
+            <Table className="text-center">
               <thead>
                 <tr>
                   <th></th>
@@ -96,16 +95,16 @@ const FullCart = ({
                     </td>
                     <td>{item?.title}</td>
                     <td>${item?.price}</td>
-                    <td className="d-flex justify-content-between">
+                    <td >
                       <Button
-                        className="btn-success btn-sm"
+                        className="btn-secondary btn-sm m-2"
                         onClick={() => dispatch(decreaseQuantity(item))}
                       >
                         -
                       </Button>
                       {item?.quantity}
                       <Button
-                        className="btn-danger btn-sm"
+                        className="btn-danger btn-sm m-2"
                         onClick={() => dispatch(increaseQuantity(item))}
                       >
                         +
@@ -129,7 +128,7 @@ const FullCart = ({
               <Button variant="danger" onClick={() => dispatch(removeAll())}>
                 REMOVE ALL ITEMS
               </Button>
-              <Button variant="success" onClick={() => navigate("/checkout")}>
+              <Button variant="secondary" onClick={() => navigate("/checkout")}>
                 PROCEED TO CHECKOUT
               </Button>
             </div>
@@ -146,7 +145,7 @@ const EmptyCart = () => {
       <h1>No Items In Cart</h1>
       <Link to="/">
         <Button
-          variant="success"
+          variant="secondary"
           className="d-flex align-items-center text-decoration-none"
         >
           Start Shopping

@@ -61,7 +61,7 @@ const Register = () => {
           {message && <Notify variant="success" message={message} />}
 
           <Card.Body className="p-5">
-            <Card.Title>Register</Card.Title>
+            <Card.Title className="text-secondary">Register</Card.Title>
             <Form onSubmit={handleRegister} ref={registerRef}>
               <Row className="mb-3">
                 <Form.Group className="mb-3" controlId="exampleInputName">

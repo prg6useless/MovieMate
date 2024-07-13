@@ -18,6 +18,8 @@ const MovieDetail = () => {
   const { pathname } = useLocation();
   const { movie, getBySlug } = useMovies();
 
+  console.log(movie?.data)
+
   useEffect(() => {
     const moviedetail = pathname.split("/")[2];
     getBySlug(moviedetail);
@@ -43,15 +45,12 @@ const MovieDetail = () => {
                 </Card.Title>
                 <hr />
                 <strong>SYNOPSIS</strong>
-                <p className="text-justify">{movie?.data?.synopsis}</p>
+                <p style={{ textAlign: "justify" }}>{movie?.data?.synopsis}</p>
                 <p>
                   <strong>Duration</strong> : {movie?.data?.duration}
                 </p>
                 <p>
                   <strong>Rating </strong>: {movie?.data?.rating}
-                </p>
-                <p>
-                  <strong>Ticket Quantity</strong> : <input type="number" />
                 </p>
 
                 <div className="py-2">
@@ -71,7 +70,7 @@ const MovieDetail = () => {
                     Buy Now
                   </Button>
                   <Button
-                    variant="success"
+                    variant="secondary"
                     className="d-flex align-items-center"
                     onClick={() => {
                       dispatch(add(movie?.data));

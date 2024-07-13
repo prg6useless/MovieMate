@@ -90,7 +90,7 @@ const Home = () => {
                             <Button variant="primary">Buy Movie</Button>
                           </Link>
                           <Button
-                            variant="success"
+                            variant="secondary"
                             className="d-flex align-items-center"
                             onClick={() => {
                               dispatch(add(movie));
@@ -203,7 +203,7 @@ const Home = () => {
                         <Button variant="primary">Buy Movie</Button>
                       </Link>
                       <Button
-                        variant="success"
+                        variant="secondary"
                         className="d-flex align-items-center"
                         onClick={() => {
                           dispatch(add(movies));
