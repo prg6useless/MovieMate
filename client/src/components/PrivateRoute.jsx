@@ -8,7 +8,7 @@ const PrivateRoute = ({ component, sysRoles = [] }) => {
       {isValidToken() && isValidRole(sysRoles) ? (
         component
       ) : isValidToken() && !isValidRole(sysRoles) ? (
-        <Navigate replace to="/admin" />
+        <Navigate replace to="/" />
       ) : (
         <Navigate replace to="/login" />
       )}

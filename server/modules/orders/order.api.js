@@ -4,13 +4,13 @@ const orderController = require("./order.controller");
 const orderModel = require("./order.model");
 
 //route level middleware
-const middleWare = (req, res, next) => {
-  const { username, password } = req.headers;
-  if (username === "Saral" && password === "saral123") {
-    next();
-  }
-  res.status(404).json({ msg: "User Unauthorized" });
-};
+// const middleWare = (req, res, next) => {
+//   const { username, password } = req.headers;
+//   if (username === "Saral" && password === "saral123") {
+//     next();
+//   }
+//   res.status(404).json({ msg: "User Unauthorized" });
+// };
 
 // create new order
 router.post("/", secureMiddleWare(), async (req, res, next) => {

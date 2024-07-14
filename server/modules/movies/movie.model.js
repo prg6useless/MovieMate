@@ -23,7 +23,6 @@ const movieSchema = new Schema(
     rating: { type: Number, default: 0 },
     seats: { type: Number, required: true, default: 0 },
     price: { type: Number, required: true },
-    // TODO {reference with user}
     // Day 40 - Movies and Other APIs
     createdBy: { type: ObjectId, ref: "User" },
     updatedBy: { type: ObjectId, ref: "User" }, //ref:"User" referring to the Users collection

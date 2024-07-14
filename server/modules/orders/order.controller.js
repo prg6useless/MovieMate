@@ -114,7 +114,11 @@ const list = async ({ page = 1, limit = 5, search }) => {
 };
 
 const changeStatus = async (id, payload) => {
-  return await orderModel.findOneAndUpdate({ id }, payload, { new: true });
+  const order =  await orderModel.findOneAndUpdate({ id }, payload, { new: true });{
+    if (order && order.status === "completed"){
+      
+    }
+  }
 };
 
 module.exports = { create, getById, updateById, list, changeStatus };

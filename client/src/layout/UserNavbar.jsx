@@ -51,24 +51,23 @@ const UserNavbar = () => {
               Home
             </Link>
 
-            <Link to="/settings" style={{ textDecoration: "none" }}>
+            <Link
+              to="/settings"
+              style={{ textDecoration: "none", paddingRight: "2rem" }}
+            >
               Settings
+            </Link>
+
+            <Link to="/profile" style={{ textDecoration: "none" }}>
+              Profile
             </Link>
           </Nav>
           <Form className="d-flex">
             <Link to="/admin">
-              {getToken("currentUser") ? (
-                isAdmin ? (
-                  <Button className="mx-3" variant="outline-primary">
-                    <span>Admin Panel</span>{" "}
-                  </Button>
-                ) : (
-                  <Button className="mx-3" variant="outline-primary">
-                    <span>Dashbaord</span>
-                  </Button>
-                )
-              ) : (
-                ""
+              {isAdmin && (
+                <Button className="mx-3" variant="outline-primary">
+                  <span>Admin Panel</span>{" "}
+                </Button>
               )}
             </Link>
             <Link to="/cart">

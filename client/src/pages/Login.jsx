@@ -10,6 +10,7 @@ import { instance } from "../utils/axios";
 import { setToken, setCurrentUser } from "../utils/storage";
 
 import "./Card.css";
+import { isValidRole } from "../utils/secure";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -33,7 +34,8 @@ const Login = () => {
       if (localStorage.getItem("redirectUrl")) {
         navigate(localStorage.getItem("redirectUrl"));
       } else {
-        navigate("/admin");
+        const isUserAdmin = isValidRole(["admin"]);
+        isUserAdmin ? navigate("/admin") : navigate("/");
       }
     } catch (error) {
       const errorMsg =

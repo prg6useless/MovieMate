@@ -22,6 +22,7 @@ import Home from "./pages/user/Home";
 import Cart from "./pages/user/Cart";
 import MovieDetail from "./pages/user/MovieDetail";
 import Settings from "./pages/Settings";
+import Profile from "./pages/Profile";
 
 import ThemeContext from "./context/ThemeContext";
 import VerifyEmail from "./pages/VerifyEmail";
@@ -50,53 +51,24 @@ function App() {
           <Route path="/movies/:slug" element={<MovieDetail />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
         {/* Admin Routes */}
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<PrivateRoute component={<Dashboard />} />} />
-          <Route
-            path="orders/"
-            element={
-              <PrivateRoute component={<Orders />} sysRoles={["admin"]} />
-            }
-          />
-          <Route
-            path="orders/:id"
-            element={
-              <PrivateRoute component={<Order />} sysRoles={["admin"]} />
-            }
-          />
-          <Route
-            path="movies"
-            element={
-              <PrivateRoute component={<Movies />} sysRoles={["admin"]} />
-            }
-          />
-          <Route
-            path="movies/:id"
-            element={
-              <PrivateRoute component={<Movie />} sysRoles={["admin"]} />
-            }
-          />
-          <Route
-            path="users"
-            element={
-              <PrivateRoute component={<Users />} sysRoles={["admin"]} />
-            }
-          />
-          <Route
-            path="users/:id"
-            element={<PrivateRoute component={<User />} sysRoles={["admin"]} />}
-          />
-          <Route
-            path="profile"
-            element={<PrivateRoute component={<Dashboard />} />}
-          />
-
-          <Route
-            path="settings"
-            element={<PrivateRoute component={<Settings />} />}
-          />
+        <Route
+          path="/admin"
+          element={
+            <PrivateRoute component={<AdminLayout />} sysRoles={["admin"]} />
+          }
+        >
+          <Route index element={<Dashboard />} />
+          <Route path="orders/" element={<Orders />} />
+          <Route path="orders/:id" element={<Order />} />
+          <Route path="movies" element={<Movies />} />
+          <Route path="movies/:id" element={<Movie />} />
+          <Route path="users" element={<Users />} />
+          <Route path="users/:id" element={<User />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
 
         <Route path="*" element={<ErrorPage />}></Route>
