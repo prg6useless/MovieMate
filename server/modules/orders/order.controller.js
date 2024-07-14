@@ -1,9 +1,36 @@
 const orderModel = require("./order.model");
+const movieModel = require("../movies/movie.model");
 const { v4: uuidv4 } = require("uuid");
 
 const create = async (payload) => {
   payload.id = uuidv4();
-  return await orderModel.create(payload);
+  // check movie seats count
+  for (const product of payload.products) {
+    const movie = await movieModel.findOne({ _id: product?.movie });
+    if (!movie) throw new Error("No Movie Found");
+    if (movie.seats < product?.quantity)
+      throw new Error("Seats are not available");
+  }
+  // create the order
+  const order = await orderModel.create(payload);
+  if (!order)
+    throw new Error(
+      "There was a problem while processing your order. Please try again."
+    );
+  for (const product of order.products) {
+    const movie = await movieModel.findOne({ _id: product?.movie });
+    if (!movie) throw new Error("No Movie Found");
+    if (movie.seats < product?.quantity)
+      throw new Error("Seats are not available");
+    // subtract seats
+    await movieModel.updateOne(
+      { _id: product?.movie },
+      {
+        seats: movie?.seats - product?.quantity,
+      }
+    );
+  }
+  return order;
 };
 
 const getById = async (id) => {
@@ -114,11 +141,31 @@ const list = async ({ page = 1, limit = 5, search }) => {
 };
 
 const changeStatus = async (id, payload) => {
-  const order =  await orderModel.findOneAndUpdate({ id }, payload, { new: true });{
-    if (order && order.status === "completed"){
-      
-    }
+  const order = await orderModel.findOneAndUpdate({ id }, payload, {
+    new: true,
+  });
+  if (!order) throw new Eror("Order Not Found");
+  if (order?.status === "failed" || order?.status === "cancelled") {
+    order?.products.map(async (product) => {
+      const movie = await movieModel.findOne({ _id: product?.movie });
+      if (!movie) throw new Error("Movie Not Found");
+      await movieModel.updateOne(
+        { _id: movie._id },
+        { seats: movie?.seats + product?.quantity }
+      );
+    });
   }
+  if (order?.status === "completed" || order?.status === "pending") {
+    order?.products.map(async (product) => {
+      const movie = await movieModel.findOne({ _id: product?.movie });
+      if (!movie) throw new Error("Movie Not Found");
+      await movieModel.updateOne(
+        { _id: movie._id },
+        { seats: movie?.seats - product?.quantity }
+      );
+    });
+  }
+  return order;
 };
 
 module.exports = { create, getById, updateById, list, changeStatus };
