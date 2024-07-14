@@ -34,34 +34,67 @@ const create = async (payload) => {
 };
 
 const getById = async (id) => {
+  // const result = await orderModel.aggregate([
+  //   {
+  //     $match: {
+  //       id,
+  //     },
+  //   },
+  //   {
+  //     $lookup: {
+  //       from: "users",
+  //       localField: "buyer",
+  //       foreignField: "_id",
+  //       as: "buyer",
+  //     },
+  //   },
+  //   {
+  //     $unwind: {
+  //       path: "$buyer",
+  //       preserveNullAndEmptyArrays: false,
+  //     },
+  //   },
+  //   {
+  //     $project: {
+  //       "buyer.password": false,
+  //       "buyer.roles": false,
+  //       "buyer.isActive": false,
+  //       "buyer.isEmailVerified": false,
+  //       "buyer.createdAt": false,
+  //       "buyer.updatedAt": false,
+  //     },
+  //   },
+  //   {
+  //     $lookup: {
+  //       from: "movies",
+  //       localField: "products.movie",
+  //       foreignField: "_id",
+  //       as: "products",
+  //     },
+  //   },
+  //   {
+  //     $project: {
+  //       "products.slug": false,
+  //       "products.createdAt": false,
+  //       "products.updatedAt": false,
+  //       "products.endDate": false,
+  //     },
+  //   },
+  // ]);
   const result = await orderModel.aggregate([
     {
       $match: {
-        id,
-      },
-    },
-    {
-      $lookup: {
-        from: "users",
-        localField: "buyer",
-        foreignField: "_id",
-        as: "buyer",
+        id: "4ec21f52-81ab-4ad1-9ea7-83d83ec65bdd",
       },
     },
     {
       $unwind: {
-        path: "$buyer",
-        preserveNullAndEmptyArrays: false,
+        path: "$products",
       },
     },
     {
-      $project: {
-        "buyer.password": false,
-        "buyer.roles": false,
-        "buyer.isActive": false,
-        "buyer.isEmailVerified": false,
-        "buyer.createdAt": false,
-        "buyer.updatedAt": false,
+      $unwind: {
+        path: "$products.movie",
       },
     },
     {
@@ -69,7 +102,13 @@ const getById = async (id) => {
         from: "movies",
         localField: "products.movie",
         foreignField: "_id",
-        as: "products",
+        as: "products.movie",
+      },
+    },
+    {
+      $unwind: {
+        path: "$products.movie",
+        preserveNullAndEmptyArrays: false,
       },
     },
     {
@@ -78,6 +117,41 @@ const getById = async (id) => {
         "products.createdAt": false,
         "products.updatedAt": false,
         "products.endDate": false,
+      },
+    },
+    {
+      $group: {
+        _id: "$_id",
+        id: {
+          $first: "$id",
+        },
+        buyer: {
+          $first: "$buyer",
+        },
+        name: {
+          $first: "$name",
+        },
+        email: {
+          $first: "$email",
+        },
+        total: {
+          $first: "$total",
+        },
+        products: {
+          $push: "$products",
+        },
+        type: {
+          $first: "$type",
+        },
+        status: {
+          $first: "$status",
+        },
+        createdAt: {
+          $first: "$createdAt",
+        },
+        updatedAt: {
+          $first: "$updatedAt",
+        },
       },
     },
   ]);

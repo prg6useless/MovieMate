@@ -18,14 +18,11 @@ const list = (limit, page) => {
   );
 };
 const getById = (id) => {
-  return (
-    instance.get(`${APIs.ORDERS}/${id}`),
-    {
-      headers: {
-        token: getToken("token"),
-      },
-    }
-  );
+  return instance.get(`${APIs.ORDERS}/${id}`, {
+    headers: {
+      token: getToken("token"),
+    },
+  });
 };
 
 // admin routes

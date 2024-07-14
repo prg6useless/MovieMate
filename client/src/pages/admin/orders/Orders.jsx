@@ -38,6 +38,14 @@ const Orders = () => {
     dispatch(listOrder({ page: currentPage, limit }));
   }, [dispatch, currentPage, limit]);
 
+  const updateLimit = (number) => {
+    dispatch(setLimit(number));
+  };
+
+  const updateCurrentPage = (number) => {
+    dispatch(setCurrentPage(number));
+  };
+
   useEffect(() => {
     initialFetch();
   }, [initialFetch]);
@@ -46,20 +54,20 @@ const Orders = () => {
       <Card>
         <CardHeader className="fs-1">
           Orders
-          <div className="d-flex justify-content-end">
+          {/* <div className="d-flex justify-content-end">
             <Button>Add New Order</Button>
-          </div>
+          </div> */}
         </CardHeader>
 
         <Card.Body>
-          <TableContent headers={getHeaders(orders)} data={orders} />
+          <TableContent headers={getHeaders(orders)} data={orders} edit="/admin/orders"/>
         </Card.Body>
         <Paginate
           total={total}
           limit={limit}
           currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          setLimit={setLimit}
+          setCurrentPage={updateCurrentPage}
+          setLimit={updateLimit}
         />
       </Card>
     </>

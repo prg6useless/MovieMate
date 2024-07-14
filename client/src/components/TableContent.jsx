@@ -1,6 +1,8 @@
 import Table from "react-bootstrap/Table";
+import { Link } from "react-router-dom";
+import { CiEdit } from "react-icons/ci";
 
-const TableContent = ({ headers = [], data = [] }) => {
+const TableContent = ({ headers = [], data = [], edit }) => {
   return (
     <>
       <Table striped bordered hover>
@@ -26,7 +28,13 @@ const TableContent = ({ headers = [], data = [] }) => {
                   {headers.map((key, index) => {
                     return <td key={index}>{item[key]}</td>;
                   })}
-                  <td>Sth is remaining</td>
+                  <td>
+                    {edit && (
+                      <Link to={`${edit}/${item.id}`}>
+                        <CiEdit />
+                      </Link>
+                    )}
+                  </td>
                 </tr>
               );
             })
