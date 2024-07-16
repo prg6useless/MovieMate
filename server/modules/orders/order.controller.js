@@ -34,57 +34,10 @@ const create = async (payload) => {
 };
 
 const getById = async (id) => {
-  // const result = await orderModel.aggregate([
-  //   {
-  //     $match: {
-  //       id,
-  //     },
-  //   },
-  //   {
-  //     $lookup: {
-  //       from: "users",
-  //       localField: "buyer",
-  //       foreignField: "_id",
-  //       as: "buyer",
-  //     },
-  //   },
-  //   {
-  //     $unwind: {
-  //       path: "$buyer",
-  //       preserveNullAndEmptyArrays: false,
-  //     },
-  //   },
-  //   {
-  //     $project: {
-  //       "buyer.password": false,
-  //       "buyer.roles": false,
-  //       "buyer.isActive": false,
-  //       "buyer.isEmailVerified": false,
-  //       "buyer.createdAt": false,
-  //       "buyer.updatedAt": false,
-  //     },
-  //   },
-  //   {
-  //     $lookup: {
-  //       from: "movies",
-  //       localField: "products.movie",
-  //       foreignField: "_id",
-  //       as: "products",
-  //     },
-  //   },
-  //   {
-  //     $project: {
-  //       "products.slug": false,
-  //       "products.createdAt": false,
-  //       "products.updatedAt": false,
-  //       "products.endDate": false,
-  //     },
-  //   },
-  // ]);
   const result = await orderModel.aggregate([
     {
       $match: {
-        id: "4ec21f52-81ab-4ad1-9ea7-83d83ec65bdd",
+        id,
       },
     },
     {

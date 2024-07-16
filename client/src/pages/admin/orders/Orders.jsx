@@ -60,7 +60,11 @@ const Orders = () => {
         </CardHeader>
 
         <Card.Body>
-          <TableContent headers={getHeaders(orders)} data={orders} edit="/admin/orders"/>
+          <TableContent
+            headers={getHeaders(orders)}
+            data={orders}
+            edit="/admin/orders"
+          />
         </Card.Body>
         <Paginate
           total={total}
