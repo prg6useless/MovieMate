@@ -11,6 +11,8 @@ import OrderServices from "../../services/orders";
 import { useNavigate } from "react-router-dom";
 import { removeAll } from "../../slices/cartSlice";
 
+import { FaCartPlus } from "react-icons/fa";
+
 const Checkout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -73,10 +75,14 @@ const Checkout = () => {
           />
         )}
         <Row>
-          <Col md={4} className="order-md-2 mb-4">
+          <Col md={5} className="order-md-2 mb-4">
             <h4 className="d-flex justify-content-between align-items-center mb-3">
-              <span className="text-muted">Your cart</span>
-              <span className="badge badge-secondary badge-pill">3</span>
+              <span className="text-muted">
+                Your cart{" "}
+                <span className="text-secondary">
+                  <FaCartPlus />
+                </span>
+              </span>
             </h4>
             <ListGroup className="mb-3">
               {cart?.length > 0 &&
@@ -103,23 +109,20 @@ const Checkout = () => {
                         </small>
                       </div>
                       <span className="text-muted">{item?.quantity}</span>
-                      <span className="text-muted">
-                        ${item?.price.toLocaleString()}
-                      </span>
                       <span>
                         ${(item?.price * item?.quantity).toLocaleString()}
                       </span>
                     </ListGroup.Item>
                   );
                 })}
-              <ListGroup.Item className="d-flex justify-content-between">
+              <ListGroup.Item className="d-flex justify-content-end gap-5">
                 <span>Total</span>
                 <strong>${totalAmount().toLocaleString()}</strong>
               </ListGroup.Item>
             </ListGroup>
           </Col>
           {msg && <Notify variant="success" message={msg} />}
-          <Col md={8} className="order-md-1">
+          <Col md={7} className="order-md-1">
             <h4 className="mb-3">Billing Information</h4>
             <Form className="needs-validation" onSubmit={handleFormSubmit}>
               <Row>

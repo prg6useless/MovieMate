@@ -35,79 +35,74 @@ const create = async (payload) => {
 
 const getById = async (id) => {
   const result = await orderModel.aggregate([
-    {
-      $match: {
-        id,
-      },
-    },
-    {
-      $unwind: {
-        path: "$products",
-      },
-    },
-    {
-      $unwind: {
-        path: "$products.movie",
-      },
-    },
-    {
-      $lookup: {
-        from: "movies",
-        localField: "products.movie",
-        foreignField: "_id",
-        as: "products.movie",
-      },
-    },
-    {
-      $unwind: {
-        path: "$products.movie",
-        preserveNullAndEmptyArrays: false,
-      },
-    },
-    {
-      $project: {
-        "products.slug": false,
-        "products.createdAt": false,
-        "products.updatedAt": false,
-        "products.endDate": false,
-      },
-    },
-    {
-      $group: {
-        _id: "$_id",
-        id: {
-          $first: "$id",
-        },
-        buyer: {
-          $first: "$buyer",
-        },
-        name: {
-          $first: "$name",
-        },
-        email: {
-          $first: "$email",
-        },
-        total: {
-          $first: "$total",
-        },
-        products: {
-          $push: "$products",
-        },
-        type: {
-          $first: "$type",
-        },
-        status: {
-          $first: "$status",
-        },
-        createdAt: {
-          $first: "$createdAt",
-        },
-        updatedAt: {
-          $first: "$updatedAt",
+    [
+      {
+        $match: {
+          id,
         },
       },
-    },
+      {
+        $lookup: {
+          from: "movies",
+          localField: "products.movie",
+          foreignField: "_id",
+          as: "movieDetails",
+        },
+      },
+      {
+        $addFields: {
+          products: {
+            $map: {
+              input: "$products",
+              as: "product",
+              in: {
+                $mergeObjects: [
+                  "$$product",
+                  {
+                    movie: {
+                      $arrayElemAt: [
+                        "$movieDetails",
+                        {
+                          $indexOfArray: ["$products", "$$product"],
+                        },
+                      ],
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
+      {
+        $unset: "movieDetails",
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "buyer",
+          foreignField: "_id",
+          as: "buyer",
+        },
+      },
+      {
+        $unwind: {
+          path: "$buyer",
+          preserveNullAndEmptyArrays: false,
+        },
+      },
+      {
+        $project: {
+          "buyer.password": false,
+          "buyer.roles": false,
+          "buyer.isActive": false,
+          "buyer.isEmailVerified": false,
+        },
+      },
+    ],
+    //TODO Project for aggregating movies
   ]);
+  return result[0];
   return result[0];
 };
 

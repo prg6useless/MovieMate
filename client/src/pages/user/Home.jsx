@@ -163,20 +163,21 @@ const Home = () => {
         </div>
       </main>
 
-      <div className=" bg-secondary">
-        <Form className="p-2  d-flex justify-content-center">
-          <Row>
-            <Col xs="auto">
+      <div style={{backgroundColor:"rgb(59, 59, 59"}}>
+        <Form className="p-2 d-flex justify-content-center">
+          <Row className="w-100">
+            <Col xs={12} md={8} lg={3} className="mb-2 mb-md-0">
               <Form.Control
                 type="text"
                 placeholder="Search Movie"
-                className=" mr-sm-2"
-                style={{ width: "500px" }}
+                className=" mr-sm-2 w-100"
                 onChange={(e) => setTitle(e.target.value)}
               />
             </Col>
-            <Col xs="auto">
-              <Button type="submit">Search</Button>
+            <Col xs={12} md={4} lg={2}>
+              <Button type="submit">
+                Search
+              </Button>
             </Col>
           </Row>
         </Form>

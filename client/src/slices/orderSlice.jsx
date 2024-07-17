@@ -112,7 +112,7 @@ const orderSlice = createSlice({
       })
       .addCase(updateOrder.rejected, (state, action) => {
         state.laoding = false;
-        state.error = action.payload;
+        state.error = action.error.message;
       });
   },
 });
