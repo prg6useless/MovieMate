@@ -128,8 +128,18 @@ router.get("/profile", secureMiddleWare(), async (req, res, next) => {
 // ----------------------------------
 
 // Day 38  - User Remaining APIs
+// update by admin
+router.put("/:id", secureMiddleWare(), async (req, res, next) => {
+  try {
+    const result = await userController.updateByAdmin(req.params.id, req.body);
+    res.json({ msg: "Updated User By Admin Successfully", data: result });
+  } catch (e) {
+    next(e);
+  }
+});
+
 // update profile
-router.put("/profile", secureMiddleWare(), async (req, res, next) => {
+router.put("/:id/profile", secureMiddleWare(), async (req, res, next) => {
   try {
     const result = await userController.updateById(req.currentUser, req.body);
     res.json({ msg: "Updated User Profile Successfully", data: result });

@@ -1,69 +1,71 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import MovieServices from "../services/users";
+import UserServices from "../services/users";
 
 const initialState = {
   users: [],
   user: {},
-  limit: 12,
+  limit: 20,
   currentPage: 1,
   total: 0,
   error: "",
   loading: false,
 };
 
-export const createMovie = createAsyncThunk(
-  "users/createMovie",
+export const createUser = createAsyncThunk(
+  "users/createUser",
   async (payload) => {
-    const result = await MovieServices.create(payload);
+    const result = await UserServices.create(payload);
     return result?.data;
   }
 );
-export const listMovie = createAsyncThunk(
-  "users/listMovie",
+export const listUser = createAsyncThunk(
+  "users/listUser",
   async ({ page, limit, title }) => {
-    const result = await MovieServices.list(limit, page, title);
+    const result = await UserServices.list(limit, page, title);
     return result?.data;
   }
 );
-export const getOneMovie = createAsyncThunk(
-  "users/getOneMovie",
-  async (slug) => {
-    const result = await MovieServices.getBySlug(slug);
+export const getOneUser = createAsyncThunk("users/getOneUser", async (id) => {
+  const result = await UserServices.getById(id);
+  return result?.data;
+});
+export const blockUserByAdmin = createAsyncThunk(
+  "users/blockUserByAdmin",
+  async ({ id }) => {
+    const result = await UserServices.blockById(id);
     return result?.data;
   }
 );
-export const changeMovieSeats = createAsyncThunk(
-  "users/changeMovieSeats",
-  async ({ slug, payload }) => {
-    const result = await MovieServices.updateSeats(slug, payload);
-    return result?.data;
-  }
-);
-export const updateMovie = createAsyncThunk(
-  "users/updateMovie",
-  async ({ slug, payload }) => {
-    const result = await MovieServices.update(slug, payload);
-    return result?.data;
-  }
-);
-
-export const updateReleaseDate = createAsyncThunk(
-  "users/updateReleaseDate",
-  async ({ slug, payload }) => {
-    const result = await MovieServices.updateReleaseDate(slug, payload);
+export const updateUser = createAsyncThunk(
+  "users/updateUser",
+  async ({ id, payload }) => {
+    const result = await UserServices.update(id, payload);
     return result?.data;
   }
 );
 
-export const deleteMovie = createAsyncThunk(
-  "users/deleteMovie",
-  async (slug) => {
-    // commented the actual process to avoid any data issues
-    // const result = await MovieServices.remove(slug);
-    // return result?.data;
-    console.log(slug);
+export const updateUserByAdmin = createAsyncThunk(
+  "users/updateUserByAdmin",
+  async ({ id, payload }) => {
+    const result = await UserServices.updateByAdmin(id, payload);
+    return result?.data;
   }
 );
+
+export const resetUserPassword = createAsyncThunk(
+  "users/resetUserPassword",
+  async ({ id, payload }) => {
+    const result = await UserServices.resetPassword(id, payload);
+    return result?.data;
+  }
+);
+
+export const deleteUser = createAsyncThunk("users/deleteUser", async (id) => {
+  // commented the actual process to avoid any data issues
+  // const result = await UserServices.removeUser(id);
+  // return result?.data;
+  console.log(id);
+});
 
 const userSlice = createSlice({
   name: "users",
@@ -78,81 +80,93 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(createMovie.fulfilled, (state, action) => {
+      .addCase(createUser.fulfilled, (state, action) => {
         state.loading = false;
         state.users = action.payload;
       })
-      .addCase(createMovie.pending, (state) => {
+      .addCase(createUser.pending, (state) => {
         state.loading = true;
       })
-      .addCase(createMovie.rejected, (state, action) => {
+      .addCase(createUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })
-      .addCase(listMovie.fulfilled, (state, action) => {
+      .addCase(listUser.fulfilled, (state, action) => {
         state.loading = false;
         state.users = action.payload.data.users;
         state.total = action.payload.data.total;
       })
-      .addCase(listMovie.pending, (state) => {
+      .addCase(listUser.pending, (state) => {
         state.loading = true;
       })
-      .addCase(listMovie.rejected, (state, action) => {
+      .addCase(listUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })
-      .addCase(getOneMovie.fulfilled, (state, action) => {
+      .addCase(getOneUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.data;
       })
-      .addCase(getOneMovie.pending, (state) => {
+      .addCase(getOneUser.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getOneMovie.rejected, (state, action) => {
+      .addCase(getOneUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })
-      .addCase(changeMovieSeats.fulfilled, (state, action) => {
+      .addCase(blockUserByAdmin.fulfilled, (state, action) => {
         state.loading = false;
+        console.log(action.payload)
         state.user = action.payload.data;
       })
-      .addCase(changeMovieSeats.pending, (state) => {
+      .addCase(blockUserByAdmin.pending, (state) => {
         state.loading = true;
       })
-      .addCase(changeMovieSeats.rejected, (state, action) => {
+      .addCase(blockUserByAdmin.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })
-      .addCase(updateMovie.fulfilled, (state, action) => {
+      .addCase(updateUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
       })
-      .addCase(updateMovie.pending, (state) => {
+      .addCase(updateUser.pending, (state) => {
         state.loading = true;
       })
-      .addCase(updateMovie.rejected, (state, action) => {
+      .addCase(updateUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })
-      .addCase(updateReleaseDate.fulfilled, (state, action) => {
+      .addCase(resetUserPassword.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.data;
       })
-      .addCase(updateReleaseDate.pending, (state) => {
+      .addCase(resetUserPassword.pending, (state) => {
         state.loading = true;
       })
-      .addCase(updateReleaseDate.rejected, (state, action) => {
+      .addCase(resetUserPassword.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })
-      .addCase(deleteMovie.fulfilled, (state, action) => {
+      .addCase(deleteUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
       })
-      .addCase(deleteMovie.pending, (state) => {
+      .addCase(deleteUser.pending, (state) => {
         state.loading = true;
       })
-      .addCase(deleteMovie.rejected, (state, action) => {
+      .addCase(deleteUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(updateUserByAdmin.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.data;
+      })
+      .addCase(updateUserByAdmin.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateUserByAdmin.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

@@ -86,7 +86,7 @@ const verifyEmail = async (payload) => {
   return validOTP;
 };
 
-const list = async ({ page = 1, limit = 2, role, search }) => { 
+const list = async ({ page = 1, limit = 2, role, search }) => {
   // advanced operations -> pagination, sort, filter, search
   const query = [];
 
@@ -166,18 +166,15 @@ const list = async ({ page = 1, limit = 2, role, search }) => {
   };
 };
 
-const blockUser = async (payload) => {
-  const user = await userModel.findOne({ _id: payload });
+const blockUser = async (id) => {
+  const user = await userModel.findOne({ _id: id });
   if (!user) throw new Error("User not found");
   const statusPayload = {
     isActive: !user?.isActive,
   };
-  const updatedUser = await userModel.updateOne(
-    { _id: payload },
-    statusPayload
-  );
+  const updatedUser = await userModel.updateOne({ _id: id }, statusPayload);
   if (!updatedUser) throw new Error("Something went wrong");
-  return true;
+  return user;
 };
 
 const removeById = (id) => {
@@ -186,6 +183,10 @@ const removeById = (id) => {
 
 const getProfile = (_id) => {
   return userModel.findOne({ _id });
+};
+
+const updateByAdmin = async (id, payload) => {
+  return userModel.findOneAndUpdate({ _id: id }, payload, { new: true }); // {new : true} immediately return updated data
 };
 
 const updateById = async (id, payload) => {
@@ -278,6 +279,7 @@ module.exports = {
   list,
   getProfile,
   updateById,
+  updateByAdmin,
   removeById,
   changePassword,
   resetPassword,

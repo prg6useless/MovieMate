@@ -9,11 +9,14 @@ import Modal from "react-bootstrap/Modal";
 import { useDispatch } from "react-redux";
 
 import { deleteMovie } from "../slices/movieSlice";
+import { deleteUser } from "../slices/userSlice";
 
 const TableContent = ({ headers = [], data = [], edit, remove }) => {
   const [show, setShow] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const dispatch = useDispatch();
+
+  const panelOption = remove.split("/")[2];
 
   const handleClose = () => {
     setShow(false);
@@ -51,7 +54,9 @@ const TableContent = ({ headers = [], data = [], edit, remove }) => {
                   })}
                   <td>
                     {edit && (
-                      <Link to={`${edit}/${item.id || item?.slug}`}>
+                      <Link
+                        to={`${edit}/${item?.id || item?.slug || item?._id}`}
+                      >
                         <CiEdit />
                       </Link>
                     )}
@@ -79,9 +84,11 @@ const TableContent = ({ headers = [], data = [], edit, remove }) => {
       {selectedItem && (
         <Modal show={show} onHide={handleClose} backdrop={false}>
           <Modal.Header closeButton>
-            <Modal.Title>Delete {selectedItem?.title}</Modal.Title>
+            <Modal.Title>Delete {selectedItem?.name}</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Are you sure you want to remove this movie?</Modal.Body>
+          <Modal.Body>
+            Are you sure you want to remove this {panelOption}?
+          </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               Cancel
@@ -89,11 +96,13 @@ const TableContent = ({ headers = [], data = [], edit, remove }) => {
             <Button
               variant="danger"
               onClick={() => {
-                dispatch(deleteMovie(selectedItem?.slug));
+                panelOption === "movie"
+                  ? dispatch(deleteMovie(selectedItem?.slug))
+                  : dispatch(deleteUser(selectedItem?._id));
                 handleClose();
               }}
             >
-              Delete Movie
+              Delete {panelOption}
             </Button>
           </Modal.Footer>
         </Modal>

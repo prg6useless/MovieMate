@@ -17,6 +17,7 @@ import {
 
 import storage from "redux-persist/lib/storage"; // store in local storage
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
+import { userReducer } from "../slices/userSlice";
 
 const persistConfig = {
   key: "MovieMate-Cart",
@@ -31,6 +32,7 @@ export const store = configureStore({
     cart: persistCart,
     movies: movieReducer,
     orders: orderReducer,
+    users: userReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -88,7 +88,7 @@ const Movies = () => {
                 headers={getHeaders(movies)}
                 data={filteredMovies}
                 edit="/admin/movies"
-                remove="/admin/movies"
+                remove="/admin/movie"
               />
               <Paginate
                 total={total}

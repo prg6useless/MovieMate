@@ -6,7 +6,7 @@ import { getToken } from "../utils/storage";
 // user and admin routes
 const list = (limit, page, role = "", email = "", name = "") => {
   return instance.get(
-    `${APIs.USERS}?limit=${limit}&page=${page}&role=${role}&email=${email}&email=${name}`,
+    `${APIs.USERS}?limit=${limit}&page=${page}&role=${role}&email=${email}&name=${name}`,
     {
       headers: {
         token: getToken("token"),
@@ -14,8 +14,12 @@ const list = (limit, page, role = "", email = "", name = "") => {
     }
   );
 };
-const getBySlug = (slug) => {
-  return instance.get(`${APIs.USERS}/${slug}`);
+const getById = (id) => {
+  return instance.get(`${APIs.USERS}/${id}`, {
+    headers: {
+      token: getToken("token"),
+    },
+  });
 };
 
 // admin routes
@@ -27,44 +31,64 @@ const create = (payload) => {
     },
   });
 };
-const update = (slug, payload) => {
-  return instance.put(`${APIs.USERS}/${slug}`, payload, {
+
+const updateByAdmin = (id, payload) => {
+  return instance.put(`${APIs.USERS}/${id}`, payload, {
+    headers: {
+      token: getToken("token"),
+    },
+  });
+};
+
+const update = (id, payload) => {
+  return instance.put(`${APIs.USERS}/${id}/profile`, payload, {
     headers: {
       token: getToken("token"),
       "Content-Type": "multipart/form-data",
     },
   });
 };
-const updateReleaseDate = (slug, payload) => {
-  return instance.patch(`${APIs.USERS}/${slug}/release-date`, payload, {
-    headers: {
-      token: getToken("token"),
-    },
-  });
-};
-const updateSeats = (slug, payload) => {
-  return instance.patch(`${APIs.USERS}/${slug}/seats`, payload, {
-    headers: {
-      token: getToken("token"),
-    },
-  });
-};
-const remove = (slug) => {
-  return instance.delete(`${APIs.USERS}/${slug}`, {
+const resetPassword = (id, payload) => {
+  return instance.patch(`${APIs.USERS}/${id}/release-date`, payload, {
     headers: {
       token: getToken("token"),
     },
   });
 };
 
-const MovieServices = {
+const removeUser = (id) => {
+  return instance.delete(
+    `${APIs.USERS}/${id}`,
+    {},
+    {
+      headers: {
+        token: getToken("token"),
+      },
+    }
+  );
+};
+
+const blockById = (id) => {
+  return instance.patch(
+    `${APIs.USERS}/${id}/block`,
+    {},
+    {
+      headers: {
+        token: getToken("token"),
+      },
+    }
+  );
+};
+
+const UserServices = {
   create,
   list,
-  getBySlug,
+  getById,
   update,
-  updateReleaseDate,
-  updateSeats,
-  remove,
+  updateByAdmin,
+  resetPassword,
+  removeUser,
+  blockById,
 };
 
-export default MovieServices;
+export default UserServices;
