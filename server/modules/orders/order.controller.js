@@ -103,7 +103,6 @@ const getById = async (id) => {
     //TODO Project for aggregating movies
   ]);
   return result[0];
-  return result[0];
 };
 
 const updateById = async (id, payload) => {
@@ -166,7 +165,7 @@ const changeStatus = async (id, payload) => {
   const order = await orderModel.findOneAndUpdate({ id }, payload, {
     new: true,
   });
-  if (!order) throw new Eror("Order Not Found");
+  if (!order) throw new Error("Order Not Found");
   if (order?.status === "failed" || order?.status === "cancelled") {
     order?.products.map(async (product) => {
       const movie = await movieModel.findOne({ _id: product?.movie });

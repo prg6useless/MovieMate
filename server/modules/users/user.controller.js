@@ -86,7 +86,7 @@ const verifyEmail = async (payload) => {
   return validOTP;
 };
 
-const list = async ({ page = 1, limit = 2, role, search }) => {
+const list = async ({ page = 1, limit = 2, role, search }) => { 
   // advanced operations -> pagination, sort, filter, search
   const query = [];
 

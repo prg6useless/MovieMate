@@ -29,7 +29,7 @@ const AdminSidebar = () => {
   return (
     <>
       <div
-        style={{ height: "100vh", backgroundColor: "rgb(77, 77, 77" }}
+        style={{ minHeight: "100vh", backgroundColor: "rgb(77, 77, 77" }}
         className="d-flex flex-column p-3"
       >
         <Navbar.Brand href="/admin" className=" mb-3">

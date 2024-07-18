@@ -1,6 +1,6 @@
 import TableContent from "../../../components/TableContent";
 import Paginate from "../../../components/Paginate";
-import { Button, Card, CardHeader } from "react-bootstrap";
+import { Card, CardHeader } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -19,18 +19,9 @@ const Orders = () => {
   );
 
   const getHeaders = (data) => {
-    if (data.length === 0) return [];
-    const {
-      createdAt,
-      id,
-      _id,
-      approvedBy,
-      buyer,
-      updatedAt,
-      __v,
-      products,
-      ...rest
-    } = data[0];
+    if (data?.length === 0) return [];
+    const { buyer, createdAt, id, products, updatedAt, __v, _id, ...rest } =
+      data[0];
     return Object.keys(rest);
   };
 
@@ -60,19 +51,21 @@ const Orders = () => {
         </CardHeader>
 
         <Card.Body>
-          <TableContent
-            headers={getHeaders(orders)}
-            data={orders}
-            edit="/admin/orders"
+          {orders && (
+            <TableContent
+              headers={getHeaders(orders)}
+              data={orders}
+              edit="/admin/orders"
+            />
+          )}
+          <Paginate
+            total={total}
+            limit={limit}
+            currentPage={currentPage}
+            setCurrentPage={updateCurrentPage}
+            setLimit={updateLimit}
           />
         </Card.Body>
-        <Paginate
-          total={total}
-          limit={limit}
-          currentPage={currentPage}
-          setCurrentPage={updateCurrentPage}
-          setLimit={updateLimit}
-        />
       </Card>
     </>
   );

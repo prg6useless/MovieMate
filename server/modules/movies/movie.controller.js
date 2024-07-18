@@ -59,7 +59,7 @@ const list = async ({ page = 1, limit = 10, search }) => {
     {
       $project: {
         metadata: 0,
-        "data.createdBy": 0
+        "data.createdBy": 0,
       },
     }
   );
@@ -85,7 +85,10 @@ const update = async (slug, payload) => {
 
 const updateReleaseDate = async (slug, payload) => {
   // check if releaseDate is older than today {use moment, luxon, date-fns}
-  return await movieModel.findOneAndUpdate({ slug }, payload, { new: true });
+  const result = await movieModel.findOneAndUpdate({ slug }, payload, {
+    new: true,
+  });
+  return result;
 };
 
 const updateSeats = async (slug, payload) => {

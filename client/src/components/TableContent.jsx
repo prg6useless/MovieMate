@@ -1,8 +1,29 @@
 import Table from "react-bootstrap/Table";
 import { Link } from "react-router-dom";
 import { CiEdit } from "react-icons/ci";
+import { MdDeleteForever } from "react-icons/md";
+import { useState } from "react";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
-const TableContent = ({ headers = [], data = [], edit }) => {
+import { useDispatch } from "react-redux";
+
+import { deleteMovie } from "../slices/movieSlice";
+
+const TableContent = ({ headers = [], data = [], edit, remove }) => {
+  const [show, setShow] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const dispatch = useDispatch();
+
+  const handleClose = () => {
+    setShow(false);
+    setSelectedItem(null);
+  };
+  const handleShow = (item) => {
+    setSelectedItem(item);
+    setShow(true);
+  };
+
   return (
     <>
       <Table striped bordered hover>
@@ -30,9 +51,16 @@ const TableContent = ({ headers = [], data = [], edit }) => {
                   })}
                   <td>
                     {edit && (
-                      <Link to={`${edit}/${item.id}`}>
+                      <Link to={`${edit}/${item.id || item?.slug}`}>
                         <CiEdit />
                       </Link>
+                    )}
+                    {remove && (
+                      <>
+                        <Button variant="link" onClick={() => handleShow(item)}>
+                          <MdDeleteForever className="text-danger" />
+                        </Button>
+                      </>
                     )}
                   </td>
                 </tr>
@@ -47,6 +75,29 @@ const TableContent = ({ headers = [], data = [], edit }) => {
           )}
         </tbody>
       </Table>
+
+      {selectedItem && (
+        <Modal show={show} onHide={handleClose} backdrop={false}>
+          <Modal.Header closeButton>
+            <Modal.Title>Delete {selectedItem?.title}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Are you sure you want to remove this movie?</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Cancel
+            </Button>
+            <Button
+              variant="danger"
+              onClick={() => {
+                dispatch(deleteMovie(selectedItem?.slug));
+                handleClose();
+              }}
+            >
+              Delete Movie
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
     </>
   );
 };

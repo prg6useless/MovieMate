@@ -14,35 +14,35 @@ export const createOrder = createAsyncThunk(
   "orders/createOrder",
   async (payload) => {
     const result = await OrderServices.create(payload);
-    return result.data;
+    return result?.data;
   }
 );
 export const listOrder = createAsyncThunk(
   "orders/listOrder",
   async ({ limit, page }) => {
     const result = await OrderServices.list(limit, page);
-    return result.data;
+    return result?.data;
   }
 );
 export const getOneOrder = createAsyncThunk(
   "orders/getOneOrder",
   async (id) => {
     const result = await OrderServices.getById(id);
-    return result.data;
+    return result?.data;
   }
 );
 export const changeOrderStatus = createAsyncThunk(
   "orders/changeOrderStatus",
-  async (id, payload) => {
+  async ({ id, payload }) => {
     const result = await OrderServices.updateStatus(id, payload);
-    return result.data;
+    return result?.data;
   }
 );
 export const updateOrder = createAsyncThunk(
   "orders/updateOrder",
-  async (id, payload) => {
+  async ({ id, payload }) => {
     const result = await OrderServices.update(id, payload);
-    return result.data;
+    return result?.data;
   }
 );
 
@@ -60,7 +60,8 @@ const orderSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(createOrder.fulfilled, (state, action) => {
-        (state.laoding = false), (state.orders = action.payload);
+        state.laoding = false;
+        state.orders = action.payload;
       })
       .addCase(createOrder.pending, (state) => {
         state.laoding = true;
@@ -105,7 +106,7 @@ const orderSlice = createSlice({
       })
       .addCase(updateOrder.fulfilled, (state, action) => {
         state.laoding = false;
-        state.orders = action.payload;
+        state.order = action.payload;
       })
       .addCase(updateOrder.pending, (state) => {
         state.laoding = true;

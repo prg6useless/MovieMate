@@ -70,7 +70,7 @@ router.patch(
 //update order  by id
 router.put("/:id", secureMiddleWare(["admin"]), async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params; 
     const result = await orderController.updateById(id, req.body);
     res.json({ msg: `updated order of id : ${id}`, data: result });
   } catch (e) {

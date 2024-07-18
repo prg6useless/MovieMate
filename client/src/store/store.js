@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import { cartReducer } from "../slices/cartSlice";
 import { orderReducer } from "../slices/orderSlice";
-// import { movieReducer } from "../slices/movieSlice";
+import { movieReducer } from "../slices/movieSlice";
 
 import {
   persistStore,
@@ -29,7 +29,7 @@ const persistCart = persistReducer(persistConfig, cartReducer);
 export const store = configureStore({
   reducer: {
     cart: persistCart,
-    // movies: movieReducer,
+    movies: movieReducer,
     orders: orderReducer,
   },
   middleware: (getDefaultMiddleware) =>

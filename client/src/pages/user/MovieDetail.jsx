@@ -1,6 +1,6 @@
 import { useMovies } from "../../hooks/useMovies";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Card, Button, Row, Col } from "react-bootstrap";
 
 import Image from "react-bootstrap/Image";
@@ -8,7 +8,7 @@ import Image from "react-bootstrap/Image";
 import { FaCartPlus } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 
-import { add } from "../../slices/cartSlice";
+import { add, increaseQuantity } from "../../slices/cartSlice";
 
 import "./MovieDetail.css";
 
@@ -18,7 +18,8 @@ const MovieDetail = () => {
   const { pathname } = useLocation();
   const { movie, getBySlug } = useMovies();
 
-  console.log(movie?.data)
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const moviedetail = pathname.split("/")[2];
@@ -66,8 +67,9 @@ const MovieDetail = () => {
                   <Button
                     variant="primary"
                     disabled={movie?.data?.seats < 1 ? true : false}
+                    onClick={() => navigate("/cart")}
                   >
-                    Buy Now
+                    Go to Cart
                   </Button>
                   <Button
                     variant="secondary"
