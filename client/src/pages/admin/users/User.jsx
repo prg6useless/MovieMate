@@ -8,7 +8,9 @@ import {
   getOneUser,
   updateUserByAdmin,
   blockUserByAdmin,
+  resetUserPassword,
 } from "../../../slices/userSlice";
+
 
 const User = () => {
   const dispatch = useDispatch();
@@ -17,8 +19,6 @@ const User = () => {
   const { pathname } = useLocation();
   const userId = pathname.split("/")[3];
 
-  // console.log(user);
-
   const [payload, setPayload] = useState({
     name: user?.name || "",
     email: user?.email || "",
@@ -26,11 +26,22 @@ const User = () => {
     isActive: user?.isActive || false,
     isEmailVerified: user?.isEmailVerified || false,
   });
+  const [newPassword, setNewPassword] = useState("");
 
   const handleEdit = async (e) => {
     e.preventDefault();
     dispatch(updateUserByAdmin({ id: userId, payload }));
     navigate("/admin/users");
+  };
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    dispatch(
+      resetUserPassword({
+        id: userId,
+        newPassword,
+      })
+    );
   };
 
   useEffect(() => {
@@ -171,8 +182,26 @@ const User = () => {
                 size="lg"
                 type="submit"
               >
-                Save
+                Save User Details
               </Button>
+            </Form>
+          </Col>
+        </Row>
+        <hr className="mb-4" />
+        <Row className="mt-4">
+          <Col md={3}>
+            <Form onSubmit={handleResetPassword}>
+              <Form.Label htmlFor="password">Reset Password</Form.Label>
+              <Form.Group>
+                <Form.Control // prettier-ignore
+                  type="text"
+                  defaultValue="enter new password"
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+                <Button variant="secondary" className="mt-3" type="submit">
+                  Reest Password
+                </Button>
+              </Form.Group>
             </Form>
           </Col>
         </Row>

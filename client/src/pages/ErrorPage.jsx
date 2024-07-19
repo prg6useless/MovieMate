@@ -23,4 +23,6 @@ const ErrorPage = () => {
   );
 };
 
+// TODO error page beautify remaining
+
 export default ErrorPage;

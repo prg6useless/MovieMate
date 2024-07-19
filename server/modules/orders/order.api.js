@@ -17,7 +17,7 @@ router.post("/", secureMiddleWare(), async (req, res, next) => {
   try {
     const result = await orderController.create(req.body);
     res.json({
-      msg: "Order Created Successfully. Thank you for choosing Movie Mate",
+      msg: "Order Created Successfully. The order is in review. Once the order has been reviewed, you will recieve an email with your order details",
       data: result,
     });
     // TODO add email feature to send order details
@@ -70,7 +70,7 @@ router.patch(
 //update order  by id
 router.put("/:id", secureMiddleWare(["admin"]), async (req, res, next) => {
   try {
-    const { id } = req.params; 
+    const { id } = req.params;
     const result = await orderController.updateById(id, req.body);
     res.json({ msg: `updated order of id : ${id}`, data: result });
   } catch (e) {

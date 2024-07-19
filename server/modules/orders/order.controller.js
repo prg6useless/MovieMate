@@ -2,6 +2,38 @@ const orderModel = require("./order.model");
 const movieModel = require("../movies/movie.model");
 const { v4: uuidv4 } = require("uuid");
 
+const event = require("events");
+const { sendMail } = require("../../services/email");
+const myEvent = new event.EventEmitter();
+myEvent.addListener("sendOrderDetails", (email, order) => {
+  const productsList = order.products
+    .map(
+      (product) => `
+    <li>
+      <p>Product Id: ${product._id}</p>
+      <p>Product Price: $${product.price}</p>
+      <p>Quantity: ${product.quantity}</p>
+      <p>Quantity: $${product.amount}</p>
+    </li>
+  `
+    )
+    .join("");
+  sendMail({
+    email,
+    subject: "MovieMate Order Confirmed",
+    html: `<h1>This is your order details : </h1>
+      <p> Buyer : ${order.name}</p>
+      <p> OrderId : ${order.id}</p>
+      <p> Total : $${order.total}</p>
+      <p> Type : ${order.type}</p>
+      <h2>Products:</h2>
+      <ul>
+        ${productsList}
+      </ul>
+    `,
+  });
+});
+
 const create = async (payload) => {
   payload.id = uuidv4();
   // check movie seats count
@@ -10,6 +42,8 @@ const create = async (payload) => {
     if (!movie) throw new Error("No Movie Found");
     if (movie.seats < product?.quantity)
       throw new Error("Seats are not available");
+    // Add movie title to product object
+    product.movieTitle = movie.title;
   }
   // create the order
   const order = await orderModel.create(payload);
@@ -100,7 +134,6 @@ const getById = async (id) => {
         },
       },
     ],
-    //TODO Project for aggregating movies
   ]);
   return result[0];
 };
@@ -184,6 +217,16 @@ const changeStatus = async (id, payload) => {
         { _id: movie._id },
         { seats: movie?.seats - product?.quantity }
       );
+    });
+  }
+  if (order?.status === "completed") {
+    const { name, id, total, type, products } = order;
+    myEvent.emit("sendOrderDetails", order?.email, {
+      name,
+      id,
+      total,
+      type,
+      products,
     });
   }
   return order;

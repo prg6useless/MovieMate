@@ -22,7 +22,7 @@ const Home = () => {
   const { cart } = useSelector((state) => state.cart);
   const [limit, setLimit] = useState(4);
   const [page, setPage] = useState(1);
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState(""); 
   const [featuredMovie, setFeaturedmovie] = useState([]);
 
   const { allMovie, loading, getAllMovies } = useMovies();

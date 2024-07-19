@@ -54,8 +54,8 @@ export const updateUserByAdmin = createAsyncThunk(
 
 export const resetUserPassword = createAsyncThunk(
   "users/resetUserPassword",
-  async ({ id, payload }) => {
-    const result = await UserServices.resetPassword(id, payload);
+  async (payload) => {
+    const result = await UserServices.resetPassword(payload);
     return result?.data;
   }
 );
@@ -116,7 +116,6 @@ const userSlice = createSlice({
       })
       .addCase(blockUserByAdmin.fulfilled, (state, action) => {
         state.loading = false;
-        console.log(action.payload)
         state.user = action.payload.data;
       })
       .addCase(blockUserByAdmin.pending, (state) => {

@@ -72,7 +72,7 @@ const Movies = () => {
     <>
       <Card>
         <CardHeader className="fs-1">
-          Orders
+          Movies
           <div className="d-flex justify-content-end">
             <Button className="d-flex justify-content-between align-items-center">
               <span>Create New Movie</span>

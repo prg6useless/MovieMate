@@ -16,7 +16,7 @@ const TableContent = ({ headers = [], data = [], edit, remove }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const dispatch = useDispatch();
 
-  const panelOption = remove.split("/")[2];
+  const panelOption = remove?.split("/")[2];
 
   const handleClose = () => {
     setShow(false);
@@ -84,7 +84,12 @@ const TableContent = ({ headers = [], data = [], edit, remove }) => {
       {selectedItem && (
         <Modal show={show} onHide={handleClose} backdrop={false}>
           <Modal.Header closeButton>
-            <Modal.Title>Delete {selectedItem?.name}</Modal.Title>
+            <Modal.Title>
+              Delete{" "}
+              {panelOption === "movie"
+                ? selectedItem?.title.concat(" ", "Movie")
+                : selectedItem?.name}
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             Are you sure you want to remove this {panelOption}?

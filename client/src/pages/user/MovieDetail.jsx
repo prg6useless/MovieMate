@@ -8,7 +8,7 @@ import Image from "react-bootstrap/Image";
 import { FaCartPlus } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 
-import { add, increaseQuantity } from "../../slices/cartSlice";
+import { add} from "../../slices/cartSlice";
 
 import "./MovieDetail.css";
 

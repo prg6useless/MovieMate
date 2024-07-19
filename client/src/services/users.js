@@ -14,6 +14,14 @@ const list = (limit, page, role = "", email = "", name = "") => {
     }
   );
 };
+
+const getMyProfile = () => {
+  return instance.get(`${APIs.USERS}/profile`, {
+    headers: {
+      token: getToken("token"),
+    },
+  });
+};
 const getById = (id) => {
   return instance.get(`${APIs.USERS}/${id}`, {
     headers: {
@@ -44,12 +52,11 @@ const update = (id, payload) => {
   return instance.put(`${APIs.USERS}/${id}/profile`, payload, {
     headers: {
       token: getToken("token"),
-      "Content-Type": "multipart/form-data",
     },
   });
 };
-const resetPassword = (id, payload) => {
-  return instance.patch(`${APIs.USERS}/${id}/release-date`, payload, {
+const resetPassword = (payload) => {
+  return instance.patch(`${APIs.USERS}/reset-password`, payload, {
     headers: {
       token: getToken("token"),
     },
@@ -80,13 +87,23 @@ const blockById = (id) => {
   );
 };
 
+const changePassword = (payload) => {
+  return instance.patch(`${APIs.USERS}/change-password`, payload, {
+    headers: {
+      token: getToken("token"),
+    },
+  });
+};
+
 const UserServices = {
   create,
   list,
+  getMyProfile,
   getById,
   update,
   updateByAdmin,
   resetPassword,
+  changePassword,
   removeUser,
   blockById,
 };

@@ -3,9 +3,7 @@ const { generateHash, compareHash } = require("../../utils/hash");
 const { signToken, generateOTP } = require("../../utils/token");
 
 const event = require("events");
-const { EventEmitter } = require("stream");
 const { sendMail } = require("../../services/email");
-const { hashSync } = require("bcryptjs");
 
 const myEvent = new event.EventEmitter();
 
@@ -22,6 +20,14 @@ myEvent.addListener("emailVerification", (email, token) => {
     email,
     subject: "MovieMate Email Verification",
     html: `<p>This is your OTP for verifying your email : </p>${token}`,
+  });
+});
+
+myEvent.addListener("resetPassword", (email, password) => {
+  sendMail({
+    email,
+    subject: "MovieMate Password Reset",
+    html: `<p>You requested for reset password. Your New Password is : <strong>${password}</strong></p>`,
   });
 });
 
@@ -213,9 +219,10 @@ const changePassword = async (id, payload) => {
   if (!isValidPassword)
     throw new Error("Old Password does not match with current user password");
   // convert newPassword to hash and save to database
-  return userModel.updateOne(
+  return await userModel.findOneAndUpdate(
     { _id: id },
-    { password: generateHash(newPassword) }
+    { password: generateHash(newPassword) },
+    { new: true }
   );
 };
 
@@ -228,6 +235,7 @@ const resetPassword = async (id, newPassword) => {
   });
   if (!user) throw new Error("User Not Found");
   // convert newPassword to hash and save to database
+  myEvent.emit("resetPassword", user?.email, newPassword);
   return userModel.updateOne(
     { _id: id },
     { password: generateHash(newPassword) }
