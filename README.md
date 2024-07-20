@@ -11,6 +11,15 @@
 
 - The backend and frontend communicates through RESTApi built using NodeJS and ExpressJS.
 
+### Generating custom.css files
+
+1. Install the live sass compiler extionsion by glenn marks
+2. npm i bootstrap
+3. Click watch sass at bottom, generate 2 files (custom.css and custom.css.map) in the scss folder
+4. Type @import "../../node_modules/bootstrap/scss/bootstrap" in custom.scss
+5. custom.css is populated
+6. include <link rel="stylesheet" href="src/scss/custom.css"/> in index.html
+
 ## App Images
 
 ### Home Page
