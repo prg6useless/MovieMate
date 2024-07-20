@@ -1,16 +1,6 @@
 const router = require("express").Router();
 const { secureMiddleWare } = require("../../utils/secure");
 const orderController = require("./order.controller");
-const orderModel = require("./order.model");
-
-//route level middleware
-// const middleWare = (req, res, next) => {
-//   const { username, password } = req.headers;
-//   if (username === "Saral" && password === "saral123") {
-//     next();
-//   }
-//   res.status(404).json({ msg: "User Unauthorized" });
-// };
 
 // create new order
 router.post("/", secureMiddleWare(), async (req, res, next) => {
@@ -20,7 +10,6 @@ router.post("/", secureMiddleWare(), async (req, res, next) => {
       msg: "Order Created Successfully. The order is in review. Once the order has been reviewed, you will recieve an email with your order details",
       data: result,
     });
-    // TODO add email feature to send order details
   } catch (e) {
     next(e);
   }
@@ -34,7 +23,7 @@ router.get("/", secureMiddleWare(), async (req, res, next) => {
       id: showAll && req.isAdmin ? "" : req.currentUser,
     };
     const result = await orderController.list({ page, limit, search });
-    res.json({ msg: "All orders", data: result }); // req.body arriving from application level middleware
+    res.json({ msg: "All orders", data: result }); 
   } catch (e) {
     next(e);
   }

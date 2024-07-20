@@ -5,6 +5,8 @@ import ErrorPage from "./pages/ErrorPage";
 // user routes
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import VerifyEmail from "./pages/VerifyEmail";
+import ForgetPassword from "./pages/ForgetPassword";
 
 // admin routes
 import AdminLayout from "./layout/AdminLayout";
@@ -23,11 +25,9 @@ import Cart from "./pages/user/Cart";
 import MovieDetail from "./pages/user/MovieDetail";
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
+import Checkout from "./pages/user/Checkout";
 
 import ThemeContext from "./context/ThemeContext";
-import VerifyEmail from "./pages/VerifyEmail";
-import ForgetPassword from "./pages/ForgetPassword";
-import Checkout from "./pages/user/Checkout";
 
 // routing check
 import PrivateRoute from "./components/PrivateRoute";
@@ -36,10 +36,6 @@ function App() {
   return (
     <ThemeContext>
       <Routes>
-        {/* <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/verify-email" element={<VerifyEmail />} />
-        <Route path="/forget-password" element={<ForgetPassword />} /> */}
         {/* User Routes */}
         <Route path="/" element={<UserLayout />}>
           <Route index element={<Home />} />

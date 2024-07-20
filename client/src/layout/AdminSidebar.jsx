@@ -1,5 +1,7 @@
 import { Navbar, Nav, Dropdown } from "react-bootstrap";
+
 import { Link, useLocation, useNavigate } from "react-router-dom";
+
 import { getToken, removeToken } from "../utils/storage";
 
 import { FaUserCircle } from "react-icons/fa";
@@ -7,6 +9,7 @@ import { FaUsers } from "react-icons/fa6";
 import { GiTheater } from "react-icons/gi";
 import { IoIosListBox } from "react-icons/io";
 import { IoHome, IoSettings } from "react-icons/io5";
+
 import Logo from "../assets/movie-mate-logo-2.png";
 import LogoOnly from "../assets/movie-mate-logo.png";
 

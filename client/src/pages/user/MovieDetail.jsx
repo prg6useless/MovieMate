@@ -1,16 +1,13 @@
-import { useMovies } from "../../hooks/useMovies";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Card, Button, Row, Col } from "react-bootstrap";
 
-import Image from "react-bootstrap/Image";
-
+import { Card, Button, Row, Col ,Image} from "react-bootstrap";
 import { FaCartPlus } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
-
-import { add} from "../../slices/cartSlice";
-
 import "./MovieDetail.css";
+
+import { useMovies } from "../../hooks/useMovies";
+import { useDispatch, useSelector } from "react-redux";
+import { add} from "../../slices/cartSlice";
 
 const MovieDetail = () => {
   const dispatch = useDispatch();

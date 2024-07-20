@@ -1,17 +1,16 @@
-import { useDispatch, useSelector } from "react-redux";
 import { Container, Button, Table, Card } from "react-bootstrap";
-// import { useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import "../Card.css";
+
 import { Link, useNavigate } from "react-router-dom";
 
+import { useDispatch, useSelector } from "react-redux";
 import {
   removeItem,
   increaseQuantity,
   decreaseQuantity,
   removeAll,
 } from "../../slices/cartSlice";
-
-import "../Card.css";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -21,10 +20,6 @@ const Cart = () => {
 
   return (
     <>
-      {/* {cart.map((item, index) => {
-          return <div key={index}>{item.title}</div>;
-        })}*/}
-
       <div className="d-flex justify-content-center align-items-center flex-column gap-2">
         {cart?.length > 0 ? (
           <FullCart

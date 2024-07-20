@@ -1,4 +1,3 @@
-// CRUD operations
 const movieModel = require("./movie.model");
 const { slugger } = require("../../utils/text");
 const moment = require("moment");
@@ -9,8 +8,8 @@ const create = async (payload) => {
   // check if slug exists in database
   const movie = await movieModel.findOne({ slug: slugTitle });
   if (movie) throw new Error("Movie title already exists");
-  // create movie
   payload.slug = slugTitle;
+  // create movie
   return await movieModel.create(payload);
 };
 
@@ -84,7 +83,7 @@ const update = async (slug, payload) => {
 };
 
 const updateReleaseDate = async (slug, payload) => {
-  // check if releaseDate is older than today {use moment, luxon, date-fns}
+  // TODO check if releaseDate is older than today {use moment, luxon, date-fns}
   const result = await movieModel.findOneAndUpdate({ slug }, payload, {
     new: true,
   });
@@ -94,7 +93,6 @@ const updateReleaseDate = async (slug, payload) => {
 const updateSeats = async (slug, payload) => {
   const movie = await movieModel.findOne({ slug });
   if (!movie) throw new Error("Movie doesnt exist");
-  // check if the movie seats are less than defined number(process.env.MIN_SEATS)
   if (payload.seats < process.env.MIN_SEATS)
     throw new Error(`Movie seats cant be less than ${process.env.MIN_SEATS}`);
   return await movieModel.findOneAndUpdate({ slug }, payload, { new: true });

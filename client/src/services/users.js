@@ -1,6 +1,5 @@
-import { instance } from "../utils/axios";
-
 import { APIs } from "../constants";
+import { instance } from "../utils/axios";
 import { getToken } from "../utils/storage";
 
 // user and admin routes

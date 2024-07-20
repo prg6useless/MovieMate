@@ -93,7 +93,6 @@ const verifyEmail = async (payload) => {
 };
 
 const list = async ({ page = 1, limit = 2, role, search }) => {
-  // advanced operations -> pagination, sort, filter, search
   const query = [];
 
   // search
@@ -196,11 +195,11 @@ const updateByAdmin = async (id, payload) => {
 };
 
 const updateById = async (id, payload) => {
-  return userModel.findOneAndUpdate({ _id: id }, payload, { new: true }); // {new : true} immediately return updated data
+  return userModel.findOneAndUpdate({ _id: id }, payload, { new: true });
 };
 
 const getById = async (id) => {
-  return userModel.findOne({ _id: id }); //_id-> of database
+  return userModel.findOne({ _id: id });
 };
 
 const changePassword = async (id, payload) => {
@@ -214,11 +213,9 @@ const changePassword = async (id, payload) => {
     })
     .select("+password");
   if (!user) throw new Error("User Not Found");
-  // oldpassword with database
   const isValidPassword = compareHash(user?.password, oldPassword);
   if (!isValidPassword)
     throw new Error("Old Password does not match with current user password");
-  // convert newPassword to hash and save to database
   return await userModel.findOneAndUpdate(
     { _id: id },
     { password: generateHash(newPassword) },
@@ -227,14 +224,12 @@ const changePassword = async (id, payload) => {
 };
 
 const resetPassword = async (id, newPassword) => {
-  // does user in concern exist?
   const user = await userModel.findOne({
     _id: id,
     isActive: true,
     isEmailVerified: true,
   });
   if (!user) throw new Error("User Not Found");
-  // convert newPassword to hash and save to database
   myEvent.emit("resetPassword", user?.email, newPassword);
   return userModel.updateOne(
     { _id: id },
@@ -258,7 +253,6 @@ const forgetPasswordTokenGeneration = async (payload) => {
 };
 
 const forgetPasswordChangePass = async (payload) => {
-  // does user in concern exist?
   const { email, otp, newPassword } = payload;
   const user = await userModel.findOne({
     email,
@@ -266,7 +260,6 @@ const forgetPasswordChangePass = async (payload) => {
     isEmailVerified: true,
   });
   if (!user) throw new Error("User Not Found");
-  // convert newPassword to hash and save to database
   if (otp !== user?.otp) throw new Error("Otp mismatch");
   const hashPassword = generateHash(newPassword);
   const updatedUser = await userModel.updateOne(

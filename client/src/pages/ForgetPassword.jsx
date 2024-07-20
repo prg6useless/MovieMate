@@ -1,11 +1,11 @@
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import { Card, Button, Form } from "react-bootstrap";
 import Logo from "../assets/movie-mate-logo-2.png";
+
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
 import { Notify } from "../components/Notify";
 
-import { useState } from "react";
 import { instance } from "../utils/axios";
 
 const ForgetPassword = () => {
@@ -94,7 +94,7 @@ const ForgetPassword = () => {
             </div>
           )}
           <Card.Body className="p-5">
-            <Card.Title>Veirfy Email</Card.Title>
+            <Card.Title>Change Password</Card.Title>
             <Form onSubmit={handlePasswordChange}>
               <Form.Group className="mb-3" controlId="exampleInputEmail1">
                 <Form.Label>Enter Email Address</Form.Label>
@@ -141,7 +141,7 @@ const ForgetPassword = () => {
               )}
               {otpSent ? (
                 <Button type="submit" className="btn btn-primary">
-                  Verify Email
+                  Change Password
                 </Button>
               ) : (
                 <Button onClick={sendOTP} className="btn btn-primary">

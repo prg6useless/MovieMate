@@ -1,21 +1,19 @@
+import { useState, useEffect, useCallback } from "react";
+
 import TableContent from "../../../components/TableContent";
 import Paginate from "../../../components/Paginate";
-import { Card, CardHeader, Button } from "react-bootstrap";
 
+import { Card, CardHeader, Button } from "react-bootstrap";
 import { IoMdAdd } from "react-icons/io";
 
 import { dateFormatter } from "../../../utils/date";
+
 import { useDispatch, useSelector } from "react-redux";
-
-import { useState } from "react";
-
 import {
   listMovie,
   setCurrentPage,
   setLimit,
 } from "../../../slices/movieSlice";
-
-import { useEffect, useCallback } from "react";
 
 const Movies = () => {
   const dispatch = useDispatch();

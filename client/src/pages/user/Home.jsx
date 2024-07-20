@@ -1,28 +1,22 @@
-import { Button, Card, Form, Row, Col } from "react-bootstrap";
-
-// import Pagination from "react-bootstrap/Pagination";
-import Spinner from "react-bootstrap/Spinner";
-
-import { FaCartPlus } from "react-icons/fa";
-
-import { Link } from "react-router-dom";
-
-import { useMovies } from "../../hooks/useMovies";
 import { useState, useEffect, useCallback } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import { Button, Card, Form, Row, Col, Spinner } from "react-bootstrap";
+import { FaCartPlus } from "react-icons/fa";
+import "./Home.css";
 
+import { Link } from "react-router-dom";
+import { useMovies } from "../../hooks/useMovies";
+import { useDispatch, useSelector } from "react-redux";
 import { add } from "../../slices/cartSlice";
 
 import Paginate from "../../components/Paginate";
-import "./Home.css";
 
 const Home = () => {
   const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.cart);
   const [limit, setLimit] = useState(4);
   const [page, setPage] = useState(1);
-  const [title, setTitle] = useState(""); 
+  const [title, setTitle] = useState("");
   const [featuredMovie, setFeaturedmovie] = useState([]);
 
   const { allMovie, loading, getAllMovies } = useMovies();
@@ -46,8 +40,6 @@ const Home = () => {
     }
   }, [allMovie, featuredMovie, getTop5Movies]);
 
-  // const totalMovies = allMovie?.data?.total || 0;
-  // const totalPages = Math.ceil(totalMovies / limit);
   return (
     <div>
       <main>
@@ -163,7 +155,11 @@ const Home = () => {
         </div>
       </main>
 
-      <div style={{backgroundColor:"rgb(59, 59, 59"}}>
+      <div className="d-flex justify-content-center">
+        <h1>All Movies</h1>
+      </div>
+
+      <div style={{ backgroundColor: "rgb(59, 59, 59" }}>
         <Form className="p-2 d-flex justify-content-center">
           <Row className="w-100">
             <Col xs={12} md={8} lg={3} className="mb-2 mb-md-0">
@@ -175,9 +171,7 @@ const Home = () => {
               />
             </Col>
             <Col xs={12} md={4} lg={2}>
-              <Button type="submit">
-                Search
-              </Button>
+              <Button type="submit">Search</Button>
             </Col>
           </Row>
         </Form>

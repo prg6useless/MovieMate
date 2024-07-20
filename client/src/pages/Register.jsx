@@ -1,13 +1,12 @@
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
+import { Row, Card, Button, Form } from "react-bootstrap";
 import Logo from "../assets/movie-mate-logo-2.png";
-import { Notify } from "../components/Notify";
+
+import { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import { Notify } from "../components/Notify";
+
 import { instance } from "../utils/axios";
-import { useState, useRef } from "react";
 
 const Register = () => {
   const navigate = useNavigate();

@@ -4,9 +4,6 @@ const movieRouter = require("../modules/movies/movie.api");
 const orderRouter = require("../modules/orders/order.api");
 const userRouter = require("../modules/users/user.api");
 
-// we use express middleware to handle errors
-// two types of error :
-// application level error and routing level error
 router.get("/api/v1", (req, res, next) => {
   try {
     res.json({ msg: "MovieMate API is working" });

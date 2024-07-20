@@ -1,6 +1,8 @@
 import { Container, Row, Col, ListGroup, Form, Button } from "react-bootstrap";
+import { FaCartPlus } from "react-icons/fa";
 
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { Notify, NotifyWithLink } from "../../components/Notify";
 
@@ -8,10 +10,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { getToken } from "../../utils/storage";
 
 import OrderServices from "../../services/orders";
-import { useNavigate } from "react-router-dom";
 import { removeAll } from "../../slices/cartSlice";
 
-import { FaCartPlus } from "react-icons/fa";
+
 
 const Checkout = () => {
   const navigate = useNavigate();

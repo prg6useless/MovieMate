@@ -1,13 +1,11 @@
-import Table from "react-bootstrap/Table";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+
+import { Table, Button, Modal } from "react-bootstrap";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteForever } from "react-icons/md";
-import { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
 
 import { useDispatch } from "react-redux";
-
 import { deleteMovie } from "../slices/movieSlice";
 import { deleteUser } from "../slices/userSlice";
 

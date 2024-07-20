@@ -1,11 +1,11 @@
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import { Form, Button, Card } from "react-bootstrap";
 import Logo from "../assets/movie-mate-logo-2.png";
-import { useNavigate} from "react-router-dom";
+
 import { Notify } from "../components/Notify";
 
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+
 import { instance } from "../utils/axios";
 
 const VerifyEmail = () => {

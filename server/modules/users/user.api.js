@@ -1,5 +1,3 @@
-// day 36 - User CRUD Operations
-
 const router = require("express").Router();
 const { secureMiddleWare } = require("../../utils/secure");
 const { validator } = require("./user.validator");
@@ -53,7 +51,7 @@ router.post("/login", async (request, response, next) => {
     const result = await userController.login(request.body);
     response.json({ msg: "User successfully logged in", data: result });
   } catch (error) {
-    next(error); // sends control flow or the error to app.js
+    next(error);
   }
 });
 
@@ -63,7 +61,7 @@ router.post("/generate-email-token", async (request, response, next) => {
     const result = await userController.generateToken(request.body);
     response.json({ msg: "User Token Sent to Your Email", data: result });
   } catch (error) {
-    next(error); // sends control flow or the error to app.js
+    next(error);
   }
 });
 
@@ -73,15 +71,13 @@ router.post("/verify-email", async (request, response, next) => {
     const result = await userController.verifyEmail(request.body);
     response.json({ msg: "Email Verification Successful", data: result });
   } catch (error) {
-    next(error); // sends control flow or the error to app.js
+    next(error);
   }
 });
 
-// Day 37 - User Profile and Role Checks
 //get all users
 router.get("/", secureMiddleWare(["admin"]), async (req, res, next) => {
   try {
-    // advanced operations required -> pagination, sort, filter, search
     const { page, limit, name, email, role } = req.query;
     const filter = { role };
     const search = { name, email };
@@ -92,7 +88,7 @@ router.get("/", secureMiddleWare(["admin"]), async (req, res, next) => {
   }
 });
 
-// block a user (by admin) set isActive:false
+// block a user (by admin)
 router.patch(
   "/:id/block",
   secureMiddleWare(["admin"]),
@@ -125,9 +121,7 @@ router.get("/profile", secureMiddleWare(), async (req, res, next) => {
     next(e);
   }
 });
-// ----------------------------------
 
-// Day 38  - User Remaining APIs
 // update by admin
 router.put("/:id", secureMiddleWare(), async (req, res, next) => {
   try {
@@ -158,16 +152,6 @@ router.get("/:id", secureMiddleWare(["admin"]), async (req, res, next) => {
   }
 });
 
-// // update user details
-// router.patch("/:id", secureMiddleWare(["admin"]), async (req, res, next) => {
-//   try {
-//     const result = await userController.getById(req.params.id);
-//     res.json({ msg: "User detail generated", data: result });
-//   } catch (e) {
-//     next(e);
-//   }
-// });
-
 // change password
 router.patch(
   "/change-password",
@@ -185,7 +169,7 @@ router.patch(
   }
 );
 
-// reset password (by admin) send email
+// reset password (by admin)
 router.patch(
   "/reset-password",
   secureMiddleWare(["admin"]),
@@ -200,7 +184,7 @@ router.patch(
   }
 );
 
-// forget password, send otp email to user
+// forget password
 router.post("/forget-password-token", async (req, res, next) => {
   try {
     const result = await userController.forgetPasswordTokenGeneration(req.body);

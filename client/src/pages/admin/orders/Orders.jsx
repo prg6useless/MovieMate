@@ -1,9 +1,9 @@
 import TableContent from "../../../components/TableContent";
 import Paginate from "../../../components/Paginate";
+
 import { Card, CardHeader } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-
 import {
   listOrder,
   setCurrentPage,
@@ -45,9 +45,6 @@ const Orders = () => {
       <Card>
         <CardHeader className="fs-1">
           Orders
-          {/* <div className="d-flex justify-content-end">
-            <Button>Add New Order</Button>
-          </div> */}
         </CardHeader>
 
         <Card.Body>

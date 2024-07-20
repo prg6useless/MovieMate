@@ -1,19 +1,11 @@
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
+import { Nav, Navbar, Form, Container, Button } from "react-bootstrap";
+import { FaCartPlus } from "react-icons/fa";
 import Logo from "../assets/movie-mate-logo-2.png";
+import "./UserNavbar.css";
 
 import { useSelector } from "react-redux";
-
-import { FaCartPlus } from "react-icons/fa";
-
 import { Link, useNavigate } from "react-router-dom";
-
 import { getToken, removeToken } from "../utils/storage";
-
-import "./UserNavbar.css";
 
 const UserNavbar = () => {
   const { quantity } = useSelector((state) => state.cart);
@@ -57,10 +49,11 @@ const UserNavbar = () => {
             >
               Settings
             </Link>
-
-            <Link to="/profile" style={{ textDecoration: "none" }}>
-              Profile
-            </Link>
+            {user?.name && (
+              <Link to="/profile" style={{ textDecoration: "none" }}>
+                Profile
+              </Link>
+            )}
           </Nav>
           <Form className="d-flex">
             <Link to="/admin">

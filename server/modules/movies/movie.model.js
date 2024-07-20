@@ -1,12 +1,3 @@
-// day 35 - mongoose schema and model
-
-// structure of data of single movie
-
-// schema
-// validation/constraints
-// model
-
-// day 39 - Movies API
 const { Schema, model } = require("mongoose");
 
 const { ObjectId } = Schema.Types;
@@ -23,9 +14,8 @@ const movieSchema = new Schema(
     rating: { type: Number, default: 0 },
     seats: { type: Number, required: true, default: 0 },
     price: { type: Number, required: true },
-    // Day 40 - Movies and Other APIs
     createdBy: { type: ObjectId, ref: "User" },
-    updatedBy: { type: ObjectId, ref: "User" }, //ref:"User" referring to the Users collection
+    updatedBy: { type: ObjectId, ref: "User" },
   },
   { timestamps: true }
 );

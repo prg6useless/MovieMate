@@ -140,7 +140,7 @@ const User = () => {
               <hr className="mb-4" />
               <Row className="mt-4">
                 <Form.Group>
-                  <Form.Check // prettier-ignore
+                  <Form.Check
                     type="switch"
                     label="Is User Active?"
                     checked={payload?.isActive}
@@ -162,7 +162,7 @@ const User = () => {
               <hr className="mb-4" />
               <Row className="mt-4">
                 <Form.Group>
-                  <Form.Check // prettier-ignore
+                  <Form.Check
                     type="switch"
                     label="Is User Email Verified?"
                     checked={payload?.isEmailVerified}
@@ -193,7 +193,7 @@ const User = () => {
             <Form onSubmit={handleResetPassword}>
               <Form.Label htmlFor="password">Reset Password</Form.Label>
               <Form.Group>
-                <Form.Control // prettier-ignore
+                <Form.Control 
                   type="text"
                   defaultValue="enter new password"
                   onChange={(e) => setNewPassword(e.target.value)}

@@ -1,12 +1,12 @@
+import { useEffect, useCallback, useState } from "react";
+
 import TableContent from "../../../components/TableContent";
 import Paginate from "../../../components/Paginate";
+
 import { Card, CardHeader } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-
 import { listUser, setCurrentPage, setLimit } from "../../../slices/userSlice";
-
-import { useEffect, useCallback, useState } from "react";
 
 const Users = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -54,9 +54,6 @@ const Users = () => {
       <Card>
         <CardHeader className="fs-1">
           Users
-          {/* <div className="d-flex justify-content-end">
-            <Button>Add New Order</Button>
-          </div> */}
         </CardHeader>
 
         <Card.Body>

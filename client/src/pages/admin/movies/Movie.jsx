@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { dateFormatter } from "../../../utils/date";
 
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 
+import { dateFormatter } from "../../../utils/date";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getOneMovie,

@@ -1,4 +1,5 @@
 import { Outlet } from "react-router-dom";
+
 import UserFooter from "./UserFooter";
 import UserNavbar from "./UserNavbar";
 

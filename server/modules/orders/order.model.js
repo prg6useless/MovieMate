@@ -1,12 +1,3 @@
-// day 35 - mongoose schema and model
-
-// structure of data of single movie
-
-// schema
-// validation/constraints
-// model
-
-// day 42 - Wrapping up Backend
 const { Schema, model } = require("mongoose");
 const { ObjectId } = Schema.Types;
 

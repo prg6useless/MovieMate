@@ -1,5 +1,6 @@
 import { Button } from "react-bootstrap";
 import Logo from "../../assets/movie-mate-logo-2.png";
+
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {

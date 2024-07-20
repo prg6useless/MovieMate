@@ -11,17 +11,7 @@ app.use(cors());
 
 const mongoose = require("mongoose");
 
-// allows tha parsing of request body as json
 app.use(express.json());
-
-// this is our application level; custom middleware
-
-// app.use((req, res, next) => {
-//   req.body.country = "Nepal";
-//   req.body.currency = "NPR";
-//   next();
-// });
-
 app.use(morgan("short"));
 app.use("/", route);
 
@@ -35,11 +25,7 @@ mongoose
     console.log("Database Error", error);
   });
 
-app.use("/assets", express.static("public")); // static files
-// http://localhost:8000/assets/pdf/hello.txt
-
-// comes here from next(e) during error
-// Error Handling Middleware
+app.use("/assets", express.static("public"));
 app.use((err, req, res, next) => {
   const errorMsg = err ? err.toString() : "Something went wrong";
   res.status(500).json({ msg: errorMsg });
@@ -48,8 +34,3 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
   console.log(`Appilcation is running at port ${port}`);
 });
-
-// research about default destructure; destructuring assignment
-
-// collapse all functions ctrl + k + 0
-// uncollapse all functions ctrl + k ctrl + j

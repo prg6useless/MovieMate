@@ -4,7 +4,9 @@ const { v4: uuidv4 } = require("uuid");
 
 const event = require("events");
 const { sendMail } = require("../../services/email");
+
 const myEvent = new event.EventEmitter();
+
 myEvent.addListener("sendOrderDetails", (email, order) => {
   const productsList = order.products
     .map(
@@ -144,7 +146,6 @@ const updateById = async (id, payload) => {
 };
 
 const list = async ({ page = 1, limit = 5, search }) => {
-  // advanced operations -> pagination, sort, filter, search
   const query = [];
 
   // search
