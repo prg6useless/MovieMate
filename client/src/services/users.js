@@ -65,7 +65,6 @@ const resetPassword = (payload) => {
 const removeUser = (id) => {
   return instance.delete(
     `${APIs.USERS}/${id}`,
-    {},
     {
       headers: {
         token: getToken("token"),

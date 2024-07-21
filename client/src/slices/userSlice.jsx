@@ -62,9 +62,9 @@ export const resetUserPassword = createAsyncThunk(
 
 export const deleteUser = createAsyncThunk("users/deleteUser", async (id) => {
   // commented the actual process to avoid any data issues
-  // const result = await UserServices.removeUser(id);
-  // return result?.data;
-  console.log(id);
+  const result = await UserServices.removeUser(id);
+  return result?.data;
+  // console.log(id);
 });
 
 const userSlice = createSlice({

@@ -77,31 +77,36 @@ const Home = () => {
                           {movie?.title}
                         </h2>
                         <p className="lead">{movie?.synopsis}</p>
-                        <div className="d-flex justify-content-between lg:w-25 w-50">
-                          <Link to={`/movies/${movie?.slug}`}>
-                            <Button variant="primary">Buy Movie</Button>
-                          </Link>
-                          <Button
-                            variant="secondary"
-                            className="d-flex align-items-center"
-                            onClick={() => {
-                              dispatch(add(movie));
-                            }}
-                          >
-                            <FaCartPlus />
-                            <span className="ps-2">
-                              (
-                              {cart.length > 0 &&
-                              cart.filter((item) => item?.slug === movie?.slug)
-                                ?.length > 0
-                                ? cart.filter(
-                                    (item) => item?.slug === movie?.slug
-                                  )[0]?.quantity
-                                : 0}
-                              )
-                            </span>
-                          </Button>
-                        </div>
+                        {movie?.seats === 0 ? (
+                          <p className="fw-bold text-danger">MOVIE SOLD OUT</p>
+                        ) : (
+                          <div className="d-flex justify-content-between lg:w-25 w-50">
+                            <Link to={`/movies/${movie?.slug}`}>
+                              <Button variant="primary">Buy Movie</Button>
+                            </Link>
+                            <Button
+                              variant="secondary"
+                              className="d-flex align-items-center"
+                              onClick={() => {
+                                dispatch(add(movie));
+                              }}
+                            >
+                              <FaCartPlus />
+                              <span className="ps-2">
+                                (
+                                {cart.length > 0 &&
+                                cart.filter(
+                                  (item) => item?.slug === movie?.slug
+                                )?.length > 0
+                                  ? cart.filter(
+                                      (item) => item?.slug === movie?.slug
+                                    )[0]?.quantity
+                                  : 0}
+                                )
+                              </span>
+                            </Button>
+                          </div>
+                        )}
                       </div>
                       <div className="col-md-5 ">
                         <img
@@ -161,8 +166,8 @@ const Home = () => {
 
       <div style={{ backgroundColor: "rgb(59, 59, 59" }}>
         <Form className="p-2 d-flex justify-content-center">
-          <Row className="w-100">
-            <Col xs={12} md={8} lg={3} className="mb-2 mb-md-0">
+          <Row>
+            <Col xs={12} md={8} lg={8} className="mb-2 mb-md-0">
               <Form.Control
                 type="text"
                 placeholder="Search Movie"
@@ -194,29 +199,36 @@ const Home = () => {
                       {movies?.synopsis.substring(0, 95).concat("...")}
                     </Card.Text>
                     <div className="d-flex justify-content-between align-items-end">
-                      <Link to={`/movies/${movies?.slug}`}>
-                        <Button variant="primary">Buy Movie</Button>
-                      </Link>
-                      <Button
-                        variant="secondary"
-                        className="d-flex align-items-center"
-                        onClick={() => {
-                          dispatch(add(movies));
-                        }}
-                      >
-                        <FaCartPlus />
-                        <span className="ps-2">
-                          (
-                          {cart.length > 0 &&
-                          cart.filter((item) => item?.slug === movies?.slug)
-                            ?.length > 0
-                            ? cart.filter(
-                                (item) => item?.slug === movies?.slug
-                              )[0]?.quantity
-                            : 0}
-                          )
-                        </span>
-                      </Button>
+                      {movies?.seats === 0 ? (
+                        <p className="fw-bold text-danger">MOVIE SOLD OUT</p>
+                      ) : (
+                        <>
+                          <Link to={`/movies/${movies?.slug}`}>
+                            <Button variant="primary">Buy Movie</Button>
+                          </Link>
+                          <Button
+                            variant="secondary"
+                            className="d-flex align-items-center"
+                            onClick={() => {
+                              dispatch(add(movies));
+                            }}
+                          >
+                            <FaCartPlus />
+                            <span className="ps-2">
+                              (
+                              {cart.length > 0 &&
+                              cart.filter((item) => item?.slug === movies?.slug)
+                                ?.length > 0
+                                ? cart.filter(
+                                    (item) => item?.slug === movies?.slug
+                                  )[0]?.quantity
+                                : 0}
+                              )
+                            </span>
+                          </Button>
+                        </>
+                      )}
+
                       <small className="text-muted">{movies?.duration}</small>
                     </div>
                   </Card.Body>

@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { Card, Button, Row, Col ,Image} from "react-bootstrap";
+import { Card, Button, Row, Col, Image } from "react-bootstrap";
 import { FaCartPlus } from "react-icons/fa";
 import "./MovieDetail.css";
 
 import { useMovies } from "../../hooks/useMovies";
 import { useDispatch, useSelector } from "react-redux";
-import { add} from "../../slices/cartSlice";
+import { add } from "../../slices/cartSlice";
 
 const MovieDetail = () => {
   const dispatch = useDispatch();
@@ -16,7 +16,6 @@ const MovieDetail = () => {
   const { movie, getBySlug } = useMovies();
 
   const navigate = useNavigate();
-
 
   useEffect(() => {
     const moviedetail = pathname.split("/")[2];
@@ -56,14 +55,14 @@ const MovieDetail = () => {
                     ${movie?.data?.price}
                   </span>
                 </div>
-                {movie?.data?.seats < 1 && (
+                {movie?.data?.seats === 0 && (
                   <p className="fw-bold text-danger">MOVIE SOLD OUT</p>
                 )}
 
                 <div className="d-flex justify-content-between alignt-items-center w-75">
                   <Button
                     variant="primary"
-                    disabled={movie?.data?.seats < 1 ? true : false}
+                    disabled={movie?.data?.seats === 0 ? true : false}
                     onClick={() => navigate("/cart")}
                   >
                     Go to Cart
@@ -71,6 +70,7 @@ const MovieDetail = () => {
                   <Button
                     variant="secondary"
                     className="d-flex align-items-center"
+                    disabled={movie?.data?.seats === 0 ? true : false}
                     onClick={() => {
                       dispatch(add(movie?.data));
                     }}
