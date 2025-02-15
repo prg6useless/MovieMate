@@ -34,11 +34,16 @@ const Home = () => {
     return () => clearTimeout(result);
   }, [limit, page, title, getAllMovies]);
 
+  // useEffect(() => {
+  //   if (!featuredMovie.length && allMovie.data) {
+  //     getTop5Movies();
+  //   }
+  // }, [allMovie, featuredMovie, getTop5Movies]);
   useEffect(() => {
-    if (!featuredMovie.length && allMovie.data) {
+    if (allMovie?.data) {
       getTop5Movies();
     }
-  }, [allMovie, featuredMovie, getTop5Movies]);
+  }, [allMovie, getTop5Movies]); // Only run when allMovie updates
 
   return (
     <div>

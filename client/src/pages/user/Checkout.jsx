@@ -12,8 +12,6 @@ import { getToken } from "../../utils/storage";
 import OrderServices from "../../services/orders";
 import { removeAll } from "../../slices/cartSlice";
 
-
-
 const Checkout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -23,8 +21,8 @@ const Checkout = () => {
 
   const [payload, setPayload] = useState({
     type: "",
-    firstName: "",
-    lastName: "",
+    firstName: userInfo?.name.split(" ")[0] || "",
+    lastName: userInfo?.name.split(" ")[1] || "",
     email: userInfo?.email || "",
   });
 

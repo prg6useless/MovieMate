@@ -2,7 +2,7 @@ import { useThemeContext } from "../context/ThemeContext";
 import {Button} from "react-bootstrap"
 
 const Settings = () => {
-  const { toggleTheme } = useThemeContext();
+  const { toggleTheme } = useThemeContext(); 
 
   return (
     <div
